@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 
@@ -18,7 +19,7 @@ import StyledTextarea from "../../utillities/textbox/textarea";
 import { convertDateFormat } from "../../utillities/time-magic";
 import { errorToast } from "../../utillities/toaster";
 import StyledToggle from "../../utillities/toggle";
-import { capitalize, findKeyByValue, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
+import { capitalize, findKeyByValue, getIconForFormType, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
 
 
 export function CreatePage<T extends object>({
@@ -78,137 +79,264 @@ export function CreatePage<T extends object>({
     }
   });
 
-  useEffect(() => {
-    if (data.type === "UPDATE" && data.data) {
-      const value: InitialStateI = {};
+  // useEffect(() => {
+  //   if (data.type === "UPDATE" && data.data) {
+  //     const value: InitialStateI = {};
 
-      Object.entries(field).map(([k, v]) => {
-        const heading = data.headings.find((h) => h.key === k);
-        if (heading?.formType === "date") {
-          const dte = data.data[k] && String(data.data[k]).slice(0, 10);
-          value[v] = {
-            value: dte,
-            isValid: true,
-            errorMessage: "",
-            validMessage: "",
-          };
-        } else if (
-          ["select", "select2", "select3"].includes(heading?.formType || "")
+  //     Object.entries(field).map(([k, v]) => {
+  //       const heading = data.headings.find((h) => h.key === k);
+  //       if (heading?.formType === "date") {
+  //         const dte = data.data[k] && String(data.data[k]).slice(0, 10);
+  //         value[v] = {
+  //           value: dte,
+  //           isValid: true,
+  //           errorMessage: "",
+  //           validMessage: "",
+  //         };
+  //       } else if (
+  //         ["select", "select2", "select3"].includes(heading?.formType || "")
+  //       ) {
+  //         value[v] = {
+  //           value: data.data[k],
+  //           isValid: true,
+  //           errorMessage: "",
+  //           validMessage: "",
+  //         };
+  //       } else if (
+  //         isMyProperty<T>(k, data.data as T) &&
+  //         heading?.formType !== "obj"
+  //       ) {
+  //         value[v] = {
+  //           value: data.data[k],
+  //           isValid: true,
+  //           errorMessage: "",
+  //           validMessage: "",
+  //         };
+  //       }
+
+  //       data.headings
+  //         .filter((hd) => hd.formType === "array")
+  //         .map((hd) => {
+  //           if (hd.child && hd.child.length > 1) {
+  //             const dataForArr: Array<PageHeadingI & { data: any }> = [];
+
+  //             hd.child.forEach((el) => {
+  //               if (el.key === k) {
+  //                 if (el.formType === "date") {
+  //                   const dte =
+  //                     data.data[hd.key][k] &&
+  //                     String(data.data[hd.key][k]).slice(0, 10);
+  //                   value[v] = {
+  //                     value: dte,
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 } else if (
+  //                   ["select", "select2", "select3"].includes(el.formType)
+  //                 ) {
+  //                   value[v] = {
+  //                     value: data.data[hd.key][k],
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 } else if (isMyProperty<T>(k, data.data[hd.key] as T)) {
+  //                   value[v] = {
+  //                     value: data.data[hd.key][k],
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 }
+  //                 dataForArr.push({ ...el, data: data.data[hd.key] });
+  //               }
+  //             });
+  //             setArrayfield([...arrayfield, dataForArr]);
+  //           }
+  //         });
+
+  //       data.headings
+  //         .filter((d) => d.formType === "obj" && d.child && d.child.length >= 1)
+  //         .map((e) => {
+  //           if (e.child && e.child.length > 1) {
+  //             e.child.forEach((el) => {
+  //               if (el.key === k) {
+  //                 if (el.formType === "date") {
+  //                   const dte =
+  //                     data.data[e.key][k] &&
+  //                     String(data.data[e.key][k]).slice(0, 10);
+  //                   value[v] = {
+  //                     value: dte,
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 } else if (
+  //                   ["select", "select2", "select3"].includes(el.formType)
+  //                 ) {
+  //                   value[v] = {
+  //                     value: data.data[e.key][k],
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 } else if (isMyProperty<T>(k, data.data[e.key] as T)) {
+  //                   value[v] = {
+  //                     value: data.data[e.key][k],
+  //                     isValid: true,
+  //                     errorMessage: "",
+  //                     validMessage: "",
+  //                   };
+  //                 }
+  //               }
+  //             });
+  //           }
+  //         });
+  //     });
+
+  //     dispatch({
+  //       type: ActionFormTypesE.SET_KEY_VALUE,
+  //       payload: value,
+  //     });
+  //   }
+  // }, [ data.data]);
+useEffect(() => {
+  if (data.type === "UPDATE" && data.data) {
+    const value: InitialStateI = {};
+    // Track processed array fields to avoid duplicates
+    const processedArrayFields = new Set();
+
+    Object.entries(field).map(([k, v]) => {
+      const heading = data.headings.find((h) => h.key === k);
+      if (heading?.formType === "date") {
+        const dte = data.data[k] && String(data.data[k]).slice(0, 10);
+        value[v] = {
+          value: dte,
+          isValid: true,
+          errorMessage: "",
+          validMessage: "",
+        };
+      } else if (
+        ["select", "select2", "select3"].includes(heading?.formType || "")
+      ) {
+        value[v] = {
+          value: data.data[k],
+          isValid: true,
+          errorMessage: "",
+          validMessage: "",
+        };
+      } else if (
+        isMyProperty<T>(k, data.data as T) &&
+        heading?.formType !== "obj" &&
+        heading?.formType !== "array"
+      ) {
+        value[v] = {
+          value: data.data[k],
+          isValid: true,
+          errorMessage: "",
+          validMessage: "",
+        };
+      }
+    });
+
+    // Handle array fields separately to avoid duplication
+    const newArrayFields: Array<Array<PageHeadingI & { data: any }>> = [];
+
+    data.headings
+      .filter((hd) => hd.formType === "array")
+      .forEach((hd) => {
+        if (
+          hd.child &&
+          hd.child.length > 0 &&
+          Array.isArray(data.data[hd.key])
         ) {
-          value[v] = {
-            value: data.data[k],
-            isValid: true,
-            errorMessage: "",
-            validMessage: "",
-          };
-        } else if (
-          isMyProperty<T>(k, data.data as T) &&
-          heading?.formType !== "obj"
-        ) {
-          value[v] = {
-            value: data.data[k],
-            isValid: true,
-            errorMessage: "",
-            validMessage: "",
-          };
+          // Process each item in the array data
+          const arrayData = data.data[hd.key];
+
+          if (!processedArrayFields.has(hd.key)) {
+            processedArrayFields.add(hd.key);
+
+            // Create array field entries for each item in the array
+            if (arrayData && arrayData.length > 0) {
+              arrayData.forEach((item: any) => {
+                const dataForArr: Array<PageHeadingI & { data: any }> = [];
+
+                hd.child&& hd.child.forEach((childField) => {
+                  // Only add fields that have data
+                  if (item[childField.key] !== undefined) {
+                    const formattedValue =
+                      childField.formType === "date"
+                        ? String(item[childField.key]).slice(0, 10)
+                        : item[childField.key];
+
+                    dataForArr.push({
+                      ...childField,
+                      data: formattedValue,
+                    });
+                  }
+                });
+
+                if (dataForArr.length > 0) {
+                  newArrayFields.push(dataForArr);
+                }
+              });
+            }
+
+            // Set the value for the array field itself
+            value[field[hd.key]] = {
+              value: arrayData,
+              isValid: true,
+              errorMessage: "",
+              validMessage: "",
+            };
+          }
         }
-
-        data.headings
-          .filter((hd) => hd.formType === "array")
-          .map((hd) => {
-            if (hd.child && hd.child.length > 1) {
-              const dataForArr: Array<PageHeadingI & { data: any }> = [];
-
-              hd.child.forEach((el) => {
-                if (el.key === k) {
-                  if (el.formType === "date") {
-                    const dte =
-                      data.data[hd.key][k] &&
-                      String(data.data[hd.key][k]).slice(0, 10);
-                    value[v] = {
-                      value: dte,
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  } else if (
-                    ["select", "select2", "select3"].includes(el.formType)
-                  ) {
-                    value[v] = {
-                      value: data.data[hd.key][k],
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  } else if (isMyProperty<T>(k, data.data[hd.key] as T)) {
-                    value[v] = {
-                      value: data.data[hd.key][k],
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  }
-                  dataForArr.push({ ...el, data: data.data[hd.key] });
-                }
-              });
-              setArrayfield([...arrayfield, dataForArr]);
-            }
-          });
-
-        data.headings
-          .filter((d) => d.formType === "obj" && d.child && d.child.length >= 1)
-          .map((e) => {
-            if (e.child && e.child.length > 1) {
-              e.child.forEach((el) => {
-                if (el.key === k) {
-                  if (el.formType === "date") {
-                    const dte =
-                      data.data[e.key][k] &&
-                      String(data.data[e.key][k]).slice(0, 10);
-                    value[v] = {
-                      value: dte,
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  } else if (
-                    ["select", "select2", "select3"].includes(el.formType)
-                  ) {
-                    value[v] = {
-                      value: data.data[e.key][k],
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  } else if (isMyProperty<T>(k, data.data[e.key] as T)) {
-                    value[v] = {
-                      value: data.data[e.key][k],
-                      isValid: true,
-                      errorMessage: "",
-                      validMessage: "",
-                    };
-                  }
-                }
-              });
-            }
-          });
       });
 
-      dispatch({
-        type: ActionFormTypesE.SET_KEY_VALUE,
-        payload: value,
+    // Handle object fields
+    data.headings
+      .filter((d) => d.formType === "obj" && d.child && d.child.length >= 1)
+      .forEach((e) => {
+        if (e.child && e.child.length > 0 && data.data[e.key]) {
+          e.child.forEach((el) => {
+            const fieldKey = field[el.key];
+            if (fieldKey && data.data[e.key][el.key] !== undefined) {
+              if (el.formType === "date") {
+                const dte = String(data.data[e.key][el.key]).slice(0, 10);
+                value[fieldKey] = {
+                  value: dte,
+                  isValid: true,
+                  errorMessage: "",
+                  validMessage: "",
+                };
+              } else {
+                value[fieldKey] = {
+                  value: data.data[e.key][el.key],
+                  isValid: true,
+                  errorMessage: "",
+                  validMessage: "",
+                };
+              }
+            }
+          });
+        }
       });
+
+    // Set array fields state only if we have new data
+    if (newArrayFields.length > 0) {
+      setArrayfield(newArrayFields);
     }
-  }, [
 
-    data.data,
-    arrayValfield,
-    data.type,
-    data.headings,
+    // Dispatch all values at once
+    dispatch({
+      type: ActionFormTypesE.SET_KEY_VALUE,
+      payload: value,
+    });
+  }
+}, [data.data, field]);
+
   
-    arrayfield,
-  ]);
-
   function addToArray(da: PageHeadingI) {
 
     if (!da.child) return;
@@ -340,7 +468,9 @@ export function CreatePage<T extends object>({
     });
   }
 
-  function renderSelected(hd: PageHeadingI) {
+  function renderSelected (hd: PageHeadingI) {
+    const fieldIcon = hd.prefixIcons || getIconForFormType(hd.formType);
+  
     switch (hd.formType) {
       case "select2":
         return (
@@ -351,12 +481,12 @@ export function CreatePage<T extends object>({
                   element: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
-                      {hd.prefixIcons}
+                      {fieldIcon}
                     </div>
                   ),
                 },
                 label: hd.name,
-                placeholder: hd.placeholder,
+                placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
@@ -431,12 +561,12 @@ export function CreatePage<T extends object>({
                   element: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
-                      {hd.prefixIcons}
+                      {fieldIcon}
                     </div>
                   ),
                 },
                 label: hd.name,
-                placeholder: hd.placeholder,
+                placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
@@ -524,12 +654,12 @@ export function CreatePage<T extends object>({
                   element: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
-                      {hd.prefixIcons}
+                      {fieldIcon}
                     </div>
                   ),
                 },
                 label: hd.name,
-                placeholder: hd.placeholder,
+                placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
@@ -730,10 +860,10 @@ export function CreatePage<T extends object>({
                     });
                   },
                 },
-                prefix: hd.prefixIcons && {
+                prefix: fieldIcon && {
                   element: (
                     <div className="w-6 h-6 text-gray-600">
-                      {hd.prefixIcons}
+                      {fieldIcon}
                     </div>
                   ),
                 },

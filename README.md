@@ -1,54 +1,273 @@
-# React + TypeScript + Vite
+# Mich-Pages
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful React library for quickly generating Create, Read, Update, and Delete (CRUD) pages with minimal code; it comes with custom Input, Select1, Select2, Select3, TextArea1, TextArea2, Toggle, FileUpload components that you can use also within your project. .
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Installation](#installation)
+- [Features](#features)
+- [Usage](#usage)
+  - [Basic Example](#basic-example)
+  - [Component API](#component-api)
+- [Configuration](#configuration)
+  - [Page Configuration](#page-configuration)
+  - [Field Types](#field-types)
+  - [Category System](#category-system)
+- [Advanced Usage](#advanced-usage)
+  - [Custom Styling](#custom-styling)
+  - [Form Validation](#form-validation)
+  - [Nested Fields](#nested-fields)
+  - [Image Examples](#image-examples)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Using npm
+npm install mich-pages
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
+# Using yarn
+yarn add mich-pages
+
+# Using pnpm
+pnpm add mich-pages
+```
+
+## Features
+
+- 🚀 Rapidly create CRUD pages with minimal code
+- 🎇 Custom Input, Select1, Select2, Select3, TextArea1, TextArea2, Toggle, and FileUpload components available for use
+- 🧩 Supports multiple field types (text, number, date, select, toggle, etc.)
+- 📋 Organized category system for grouping related fields
+- 🔄 Built-in create, view, update, and delete functionality
+- 🎨 Customizable styling options
+- 📱 Responsive design out of the box
+- 🔒 TypeScript support for type safety
+- 📁 Support for file uploads and image handling
+
+## Usage
+
+### Basic Example
+
+```jsx
+import React from 'react';
+import { NewPage } from 'mich-pages';
+import { User, Phone, Calendar } from 'lucide-react';
+
+const pageConfig = {
+  type: "CREATE",
+  name: "Company",
+  icon: <Calendar />,
+  id: "company-form",
+  style: {},
+  categories: [
+    { key: "staff", name: "Staff" },
+    { key: "customer", name: "Customer" }
   ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+  headings: [
+    {
+      key: "name",
+      name: "Name",
+      category: "staff",
+      placeholder: "Enter company name",
+      formType: "text",
+      prefixIcons: <User />,
+      required: true
     },
+    {
+      key: "phoneNumber",
+      name: "Phone Number",
+      category: "staff",
+      placeholder: "Enter phone number",
+      formType: "text",
+      prefixIcons: <Phone />
+    }
+  ],
+  data: {}, // Initial data
+  showButton: {
+    createButton: true
   },
-})
+  create: {
+    create: async (data) => {
+      console.log("Form submitted:", data);
+      return "isSuccess";
+    },
+    createStatus: "none"
+  }
+};
+
+export function CompanyForm() {
+  return <NewPage data={pageConfig} />;
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Component API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The library exports several components for different use cases:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```jsx
+import {
+  NewPage,        // General purpose page component
+  NewCreatePage,  // Specifically for creation forms
+  NewViewPage,    // For view-only pages
+  NewSubmitPage,  // For submission forms
+  NewPageUi       // Base UI component for custom implementations
+  FileInput,     // File Upload ui with drag and drop features
+  Input,          // Custom Input with error checker
+  PresetQuillEditor, // rich text editor
+  SelectInput, // custom select input
+  SelectInput2, // card like select feature
+  SelectInput3, // select with search bar
+  StyledButton // normal styled button
+} from 'mich-pages';
 ```
+
+## Configuration
+
+### Page Configuration
+
+The `PageI` interface defines the structure for page configuration:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `type` | `"CREATE" \| "UPDATE" \| "VIEW"` | The type of page |
+| `name` | `string` | Page title |
+| `icon` | `ReactNode` | Icon to display with the title |
+| `id` | `string` | Unique identifier for the page |
+| `style` | `object` | Custom styling options |
+| `categories` | `PageCategoriesI[]` | Categories for organizing fields |
+| `headings` | `PageHeadingI[]` | Fields to display on the page |
+| `data` | `Record<string, any>` | Initial data for the form |
+| `showButton` | `object` | Control visibility of action buttons |
+| `create` | `object` | Configuration for create operations |
+| `update` | `object` | Configuration for update operations |
+| `delete` | `object` | Configuration for delete operations |
+
+### Field Types
+
+Mich-Pages supports various field types:
+
+- `text`: Standard text input
+- `password`: Password input
+- `email`: Email input
+- `number`: Numeric input
+- `date`: Date picker
+- `select`: Dropdown selection
+- `select2`: Enhanced dropdown selection
+- `select3`: Advanced dropdown selection
+- `toggle`: Toggle switch
+- `textarea1`: Single-line text area
+- `textarea2`: Multi-line text area
+- `array`: Array of nested fields
+- `image`: Image upload field
+- `file`: File upload field
+- `obj`: Object field with nested properties
+- `rawHtml`: Raw HTML content
+
+### Category System
+
+Categories help organize fields into logical groups:
+
+```jsx
+const categories = [
+  { key: "personal", name: "Personal Information" },
+  { key: "contact", name: "Contact Details" },
+  { key: "employment", name: "Employment Information" }
+];
+```
+
+## Advanced Usage
+
+### Custom Styling
+
+```jsx
+const pageConfig = {
+  // ...other config
+  style: {
+    primary: "#3b82f6",    // Primary color
+    secondary: "#6b7280",  // Secondary color
+    tertiary: "#1e293b"    // Tertiary color
+  }
+};
+```
+
+### Form Validation
+
+```jsx
+const headings = [
+  {
+    key: "email",
+    name: "Email",
+    category: "contact",
+    placeholder: "Enter email address",
+    formType: "email",
+    required: true,
+    useRegex: true, // Enable regex validation
+    // Other validation options...
+  }
+];
+```
+
+### Nested Fields
+
+```jsx
+const headings = [
+  {
+    key: "user",
+    name: "User",
+    category: "members",
+    placeholder: "Enter user details",
+    formType: "array",
+    prefixIcons: <User />,
+    child: [
+      {
+        key: "firstName",
+        name: "First Name",
+        category: "members",
+        placeholder: "Enter first name",
+        formType: "text",
+        required: true
+      },
+      {
+        key: "email",
+        name: "Email",
+        category: "members", 
+        placeholder: "Enter email address",
+        formType: "email"
+      }
+    ]
+  }
+];
+```
+
+## Image Examples
+
+- [create  desktop page](/src/assets/create_desktop.jpeg)
+- [update desktop page](/src/assets/update_desktop.jpeg)
+- [view desktop page](/src/assets/view_desktop.jpeg)
+- [create mobile page](/src/assets/create_mobile.jpeg)
+- [update mobile page](/src/assets/update_mobile.jpeg)
+- [view mobile page](/src/assets/view_mobile.jpeg)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+Created by [Derek Og](mailto:derekzyl@gmail.com)
+
+GitHub: [https://github.com/derekzyl/mich-pages](https://github.com/derekzyl/mich-pages)
+
+Report issues: [https://github.com/derekzyl/mich-pages/issues](https://github.com/derekzyl/mich-pages/issues)

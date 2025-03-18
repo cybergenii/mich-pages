@@ -2,7 +2,7 @@
 import { Info } from "lucide-react";
 import { Input } from "../../inputs/input";
 import { InputI, PageI } from "../../interface/interface.form";
-import { capitalize } from "../../utillities/utils";
+import { capitalize, getPageType } from "../../utillities/utils";
 
 
 export function PageUI({ data, Children }: { data: PageI; Children: any }) {
@@ -26,7 +26,7 @@ export function PageUI({ data, Children }: { data: PageI; Children: any }) {
         >
           {showHeading && (
             <div className="bg-[var(--gray-2)] p-4 flex items-center justify-start border-b border-gray-200">
-              <div className="h-6 w-6 text-[var(--primary)]">{data.icon}</div>
+              <div className="h-6 w-6 text-[var(--primary)]">{data.icon || getPageType(data.type)}</div>
               <span className="ml-3 font-semibold text-lg text-[var(--dark-1)]">
                 {capitalize( data.type.toLowerCase() )} {data.name}
               </span>

@@ -108,8 +108,6 @@
 // };
 
 // export default PresetQuillEditor;
-
-
 import Quill, { Delta } from "quill";
 import "quill/dist/quill.snow.css";
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
@@ -136,7 +134,6 @@ const Editor = forwardRef<Quill, EditorProps>(
     const defaultValueRef = useRef(defaultValue);
     const onTextChangeRef = useRef(onTextChange);
     const onSelectionChangeRef = useRef(onSelectionChange);
-    const toolbarRef = useRef<HTMLDivElement>(null);
 
     // Update callback refs when they change
     useLayoutEffect(() => {
@@ -156,30 +153,55 @@ const Editor = forwardRef<Quill, EditorProps>(
       if (!containerRef.current) return;
 
       const container = containerRef.current;
-      const editorContainer = container.appendChild(
-        container.ownerDocument.createElement("div")
-      );
+
+      // Create toolbar div
+      const toolbarDiv = container.ownerDocument.createElement("div");
+      toolbarDiv.id = "toolbar";
+      toolbarDiv.innerHTML = `
+        <span class="ql-formats">
+          <select class="ql-header">
+            <option value="1">Heading 1</option>
+            <option value="2">Heading 2</option>
+            <option selected>Normal</option>
+          </select>
+          <select class="ql-font"></select>
+        </span>
+        <span class="ql-formats">
+          <select class="ql-size"></select>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-bold"></button>
+          <button class="ql-italic"></button>
+          <button class="ql-underline"></button>
+          <button class="ql-strike"></button>
+          <button class="ql-blockquote"></button>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-list" value="ordered"></button>
+          <button class="ql-list" value="bullet"></button>
+          <button class="ql-indent" value="-1"></button>
+          <button class="ql-indent" value="+1"></button>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-link"></button>
+          <button class="ql-image"></button>
+          <button class="ql-video"></button>
+        </span>
+        <span class="ql-formats">
+          <button class="ql-clean"></button>
+        </span>
+      `;
+      container.appendChild(toolbarDiv);
+
+      // Create editor div
+      const editorDiv = container.ownerDocument.createElement("div");
+      container.appendChild(editorDiv);
 
       // Initialize Quill with toolbar
-      const quill = new Quill(editorContainer, {
+      const quill = new Quill(editorDiv, {
         theme: "snow",
         modules: {
-          toolbar: toolbarRef.current || {
-            container: [
-              [{ header: [1, 2, false] }],
-              [{ font: [] }],
-              [{ size: [] }],
-              ["bold", "italic", "underline", "strike", "blockquote"],
-              [
-                { list: "ordered" },
-                { list: "bullet" },
-                { indent: "-1" },
-                { indent: "+1" },
-              ],
-              ["link", "image", "video"],
-              ["clean"],
-            ],
-          },
+          toolbar: "#toolbar",
           clipboard: {
             matchVisual: false,
           },
@@ -220,43 +242,6 @@ const Editor = forwardRef<Quill, EditorProps>(
 
     return (
       <div className="h-full w-fit min-h-[100px]">
-        {/* Toolbar container */}
-        <div ref={toolbarRef}>
-          <span className="ql-formats">
-            <select className="ql-header">
-              <option value="1">Heading 1</option>
-              <option value="2">Heading 2</option>
-              <option value="">Normal</option>
-            </select>
-            <select className="ql-font"></select>
-          </span>
-          <span className="ql-formats">
-            <select className="ql-size"></select>
-          </span>
-          <span className="ql-formats">
-            <button className="ql-bold"></button>
-            <button className="ql-italic"></button>
-            <button className="ql-underline"></button>
-            <button className="ql-strike"></button>
-            <button className="ql-blockquote"></button>
-          </span>
-          <span className="ql-formats">
-            <button className="ql-list" value="ordered"></button>
-            <button className="ql-list" value="bullet"></button>
-            <button className="ql-indent" value="-1"></button>
-            <button className="ql-indent" value="+1"></button>
-          </span>
-          <span className="ql-formats">
-            <button className="ql-link"></button>
-            <button className="ql-image"></button>
-            <button className="ql-video"></button>
-          </span>
-          <span className="ql-formats">
-            <button className="ql-clean"></button>
-          </span>
-        </div>
-
-        {/* Editor container */}
         <div ref={containerRef}></div>
       </div>
     );
@@ -295,7 +280,7 @@ const PresetQuillEditor = ({
 
     const tempQuill = new Quill(div);
     return tempQuill.getContents();
-  }, []);
+  }, [initialValue]);
 
   // Handle text changes
   const handleTextChange = (delta: Delta) => {

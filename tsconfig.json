@@ -4,42 +4,4 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-    "compilerOptions": {
-      "target": "ES2020",
-      "useDefineForClassFields": true,
-      "lib": [
-        "ES2020",
-        "DOM",
-        "DOM.Iterable"
-      ],
-      "module": "ESNext",
-      "skipLibCheck": true,
-      /* Output options - needed for library builds */
-      "declaration": true,
-      "declarationDir": "./dist/types",
-      "outDir": "./dist",
-      "sourceMap": true,
-      /* Module resolution */
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "isolatedModules": true,
-      "jsx": "react-jsx",
-      /* Linting */
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true
-    },
-    "include": [
-      "src"
-    ],
-    "exclude": [
-      "node_modules",
-      "dist",
-      "**/__tests__/**",
-      "**/*.test.ts",
-      "**/*.test.tsx"
-    ]
-  
 }

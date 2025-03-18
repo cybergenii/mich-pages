@@ -179,24 +179,22 @@ export interface PageHeadingI {
   key: string;
   name: string;
   category: string;
-  placeholder: string;
-   
-    
-  unique?: boolean;
+
   formType:
     | InputTypeI["type"]
     | "select"
-  | "select2"
-  | "select3"
-  
+    | "select2"
+    | "select3"
     | "image"
     | "obj"
     | "toggle"
     | "textarea2"
-  | "textarea1"
-  | "array"
-  |'rawHtml'
+    | "textarea1"
+    | "array"
+    | "rawHtml";
+  placeholder?: string;
 
+  unique?: boolean;
   prefixIcons?: any;
   suffixIcons?: any;
   disabled?: boolean;
@@ -204,26 +202,26 @@ export interface PageHeadingI {
 
   show?: boolean;
   useRegex?: boolean;
-   
+
   keyValue?: {
     [key: string]: {
       value: any;
       description: string;
-  }};
+    };
+  };
   isKeyValueChild?: boolean;
   child?: PageHeadingI[];
-  
-  filter?: {
-    childKey: string
-    childValue: string
-    childDescription?: string
 
-    linkToChildKey: string
-    data: Record<string, any>[]
-    parentFilterKey?: string,
-    arrKey: string
-    }
-    
+  filter?: {
+    childKey: string;
+    childValue: string;
+    childDescription?: string;
+
+    linkToChildKey: string;
+    data: Record<string, any>[];
+    parentFilterKey?: string;
+    arrKey: string;
+  };
 }
 
 export interface PageCategoriesI {
@@ -271,7 +269,7 @@ export interface PageI {
   showHeading?: boolean;
   name: string;
   extraInfo?: string;
-  icon: any;
+  icon?: any;
   categories: PageCategoriesI[];
   headings: PageHeadingI[];
   data: Record<string, any>;

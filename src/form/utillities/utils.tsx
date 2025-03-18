@@ -8,7 +8,9 @@
 
 import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
+import { CalendarIcon, FileText, ImageIcon, Info, LinkIcon, List, LockKeyholeIcon, Mail, OptionIcon, Phone, PlusCircle, RefreshCw, Tag, ToggleLeft, ViewIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import { PageHeadingI, PageI } from "../interface/interface.form";
 
 
 export function mergeCssClass(...inputs: ClassValue[]) {
@@ -377,4 +379,57 @@ export function parseNotification(s: string): {
   }
 
   return { jsonData, subject: remainingBText, metaData: remainingEText };
+}
+
+
+
+// Helper function to get icon based on formType
+export const getIconForFormType = (formType: PageHeadingI['formType']) => {
+  switch (formType) {
+    case "image":
+      return <ImageIcon />;
+    case "date":
+      return <CalendarIcon />;
+    case "email":
+      return <Mail />;
+    case "text":
+         case 'textarea1':
+    case 'textarea2':
+      return <FileText />;
+    case "number":
+      return <Info />;
+    case "tel":
+      return <Phone />;
+    case "toggle":
+      return <ToggleLeft />;
+    case "array":
+      return <List />;
+    
+    case "select":
+    case 'select2':
+    case 'select3':
+      return <OptionIcon />
+    case 'password':
+      return <LockKeyholeIcon />
+ 
+    case 'url':
+      return <LinkIcon />
+    default:
+      return <Tag />;
+  }
+};
+
+
+export function getPageType (data: PageI['type']) {
+  
+  switch (data) {
+  
+    case 'CREATE':
+      return <PlusCircle />;
+
+    case 'UPDATE':
+      return <RefreshCw />;
+    case 'VIEW':
+      return <ViewIcon />
+  }
 }

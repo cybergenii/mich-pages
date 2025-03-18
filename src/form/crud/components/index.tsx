@@ -4,7 +4,7 @@
 import { Info } from "lucide-react";
 import { PageI } from "../../interface/interface.form";
 
-import { capitalize } from "../../utillities/utils";
+import { capitalize, getPageType } from "../../utillities/utils";
 
 import { CreatePage } from "./create";
 import { SubmitPage } from "./submit";
@@ -14,6 +14,7 @@ import { ViewPage } from "./view";
 export function Page({ data }: { data: PageI }) {
   const showHeading = data.showHeading ?? true;
   const showButton = data.showButton?.any ?? true;
+  
 
   return (
     <div className={`${showHeading ? "mt-10" : ""}`}>
@@ -32,7 +33,7 @@ export function Page({ data }: { data: PageI }) {
           >
             {showHeading && (
               <div className="bg-gray-50 p-4 shadow-sm flex items-center gap-3">
-                <div className="h-6 w-6 flex-shrink-0">{data.icon}</div>
+                <div className="h-6 w-6 flex-shrink-0">{data.icon || getPageType(data.type)}</div>
                 <h2 className="text-xl font-semibold text-gray-800">
                   {capitalize( data.type.toLowerCase() )} {data.name}
                 </h2>

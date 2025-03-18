@@ -10,5 +10,5 @@ export default defineConfig({
   dts: true,
   treeshake: true,
   bundle: true,
-  dtsOnly: false,
+ tsconfig: './tsconfig.app.json'
 });
