@@ -1,0 +1,281 @@
+@import "tailwindcss";
+
+
+.upload-file {
+    position: relative;
+    cursor: pointer;
+    max-inline-size: 8.75rem;
+    min-inline-size: 8.75rem;
+
+
+}
+
+
+
+.upload-file__input {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    z-index: 1000;
+    opacity: 0;
+    cursor: pointer;
+
+}
+
+
+
+.form-field-container:nth-child(odd):last-child:nth-child(2n+1) {
+    grid-column: span 2;
+}
+
+
+.upload-file__img {
+    max-inline-size: 8.75rem;
+    box-shadow: 1px 2px 0px 0px var(--gray-3),
+        -2px -1px 1px 0px var(--gray-3);
+
+    border-radius: 12px;
+    position: relative;
+
+}
+
+
+.upload-file__img img {
+    aspect-ratio: 1 / 1;
+    background-color: var(--white-color);
+}
+
+
+.upload-file__img img {
+    border-radius: 0.625rem;
+}
+
+.upload-file__edit {
+    background-color: transparent;
+
+}
+
+.upload-file__edit,
+.upload-file__close {
+
+    inline-size: 2rem;
+
+    display: block;
+    block-size: 2rem;
+    background-color: #ffe1e2;
+    display: grid;
+    place-items: center;
+    right: 0;
+    bottom: 0;
+    padding: 0.3125rem;
+    border-radius: 50%;
+    position: absolute;
+    inset-inline-end: -0.625rem;
+    inset-block-end: -0.625rem;
+}
+
+
+
+
+
+
+.upload-file__edit .material-icons,
+.upload-file__close .material-icons {
+    font-size: 1rem;
+}
+
+
+
+
+.pool {
+
+    background-color: green;
+    border-radius: 12px;
+    z-index: 2000;
+
+
+    /* Circular pool */
+
+
+    /* Hide overflowing parts of ripples */
+}
+
+.water-drop {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: green;
+    position: absolute;
+    top: 20px;
+    /* Adjust for placement within container */
+    left: 40px;
+    /* Adjust for placement within container */
+    animation: drop 2s ease-in-out infinite;
+}
+
+@keyframes drop {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(60px);
+        /* Drop down */
+    }
+
+    75% {
+        transform: translateY(55px);
+        /* Bounce up slightly */
+    }
+
+    100% {
+        transform: translateY(60px);
+        /* Settle down */
+    }
+}
+
+.ripple {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle closest-corner at center, transparent 20%, green 80%);
+    opacity: 0;
+    /* Initially invisible */
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: ripple 5s ease-out infinite;
+    /* Animation details */
+}
+
+
+@keyframes ripple {
+    0% {
+        opacity: 1;
+        transform: scale(0.5);
+        /* Start small */
+    }
+
+    100% {
+        opacity: 0;
+        /* Fade out */
+        transform: scale(3);
+        /* Expand and fade out */
+    }
+}
+
+/* Modal.css */
+
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: hsla(0, 0%, 40%, 0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-transparent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+
+}
+
+
+
+.modal-container-x {
+    position: absolute;
+    width: 100%;
+    /* background: linear-gradient(135deg, rgba(0, 0, 0, 0.22), rgba(255, 255, 255, 0.25)); */
+
+    background-color: white;
+    z-index: 10000;
+    border-radius: 8px;
+
+
+    /* height:  */
+
+
+}
+
+.close-icon-x {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    z-index: 1000;
+    font-size: 28px;
+    border-radius: 100%;
+    height: 32px;
+    width: 32px;
+    color: #555;
+    transition: all ease-in-out 0.5s;
+    box-shadow: inset 0px 2px 1px 0px hsla(280, 70%, 40%, 0.3), inset 0px 1px 1px 0px hsla(280, 70%, 40%, 0.2), inset 0px 1px 3px 0px hsla(280, 70%, 40%, 0.3), inset 0px 2px 1px 0px hsla(280, 70%, 40%, 0.3), inset 0px 1px 1px 0px hsla(280, 70%, 40%, 0.2), inset 0px 1px 3px 0px hsla(280, 70%, 40%, 0.3);
+}
+
+.close-icon-x:hover {
+    color: red;
+    font-size: 32px;
+    transform: rotate(180deg);
+    box-shadow: inset -0px -2px 1px 0px hsla(280, 70%, 40%, 0.3), inset 0px -1px 1px 0px hsla(280, 70%, 40%, 0.2), inset 0px -1px 3px 0px hsla(280, 70%, 40%, 0.3), inset 0px -2px 1px 0px hsla(280, 70%, 40%, 0.3), inset 0px -1px 1px 0px hsla(280, 70%, 40%, 0.2), inset 0px 1px 3px 0px hsla(280, 70%, 40%, 0.3);
+
+}
+
+.select-search {
+    width: 100%;
+
+    border-radius: 18px;
+    background-color: #fcfcfd;
+
+    background-position: right center;
+    /* Positions the icon at the right center */
+    background-repeat: no-repeat;
+    /* Ensures the image doesn't repeat */
+    background-size: 36px;
+    /* Adjust the size of the icon */
+
+    margin: 1rem auto;
+    height: 40px;
+    padding: 10px 12px 10px 16px;
+    /* Maintain padding for text */
+    border-radius: 40px;
+    box-shadow: 0.9px 1px 0px 0px var(--gray-3), -1px -0px 1px 0px var(--gray-3);
+
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+    line-height: 1.25;
+}
+
+
+.select-search:hover {
+    box-shadow: 0.9px 1px 0px 0px var(--primary), -1px -0px 1px 0px var(--primary);
+}
+
+/* Active state */
+.select-search:active {
+    box-shadow: 0.9px 1px 0px 0px var(--primary), -1px -1px 1px 0px var(--primary);
+}
+
+/* Focus state */
+.select-search:focus {
+    outline: none;
+    box-shadow: 0.9px 1px 0px 0px var(--primary), -1px -0px 1px 0px var(--primary);
+}
