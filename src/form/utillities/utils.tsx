@@ -171,6 +171,13 @@ export const capitalize = ( text: string ) => {
   }
   return _text;
 };
+/**
+ * The function `splitByUppercase` splits a string into an array of words based on uppercase letters.
+ * @param {string} text - The `splitByUppercase` function takes a `text` parameter of type string. This
+ * function splits the input text into an array of words based on uppercase letters. Each word in the
+ * output array is determined by the occurrence of an uppercase letter in the input text.
+ * @returns An array of strings where each string is a word split by uppercase letters.
+ */
 
 export function splitByUppercase(text: string): string[] {
   const words: string[] = [];
@@ -193,6 +200,18 @@ export function splitByUppercase(text: string): string[] {
   return words;
 }
 
+/**
+ * The `deleteFields` function removes specified fields from an object while preserving the rest of the
+ * object's properties.
+ * @param {T} obj - The `obj` parameter is an object of type `T`, where `T` is a generic type that
+ * extends `object`. This means that `obj` can be any object type, and the function will preserve the
+ * type of the object that is passed in.
+ * @param {(keyof T)[]} fields - The `fields` parameter in the `deleteFields` function is an array of
+ * keys that you want to delete from the object `obj`. These keys should be of the same type as the
+ * keys of the object `obj`, which is specified by the generic type `T extends object`.
+ * @returns The `deleteFields` function returns a new object that is a partial copy of the input object
+ * `obj`, excluding the fields specified in the `fields` array.
+ */
 export function deleteFields<T extends object>(
   obj: T,
   fields: (keyof T)[]
@@ -230,6 +249,8 @@ export function easyPick<T>(objs: Partial<T>, keys: KeyOf<T>[]): Partial<T> {
   }, {} as Partial<T>);
 }
 
+/* The above code is a TypeScript React component called `RenderHtml`. It takes in props `jsonData`,
+`metaData`, and `subject`. */
 export const RenderHtml = ({
   jsonData,
   metaData,
@@ -329,6 +350,20 @@ export function isImageURL(url:string) {
   return imageRegex.test(url);
 }
 
+/**
+ * The function `reduceTextLength` shortens a given text to a specified length by adding ellipsis if
+ * necessary.
+ * @param {string} text - The `text` parameter is a string that represents the text that you want to
+ * reduce the length of.
+ * @param {number} length - The `length` parameter in the `reduceTextLength` function specifies the
+ * maximum length that the `text` should be reduced to. If the length of the `text` is greater than the
+ * specified `length`, the function will truncate the text and append "..." at the end to indicate that
+ * it
+ * @returns The function `reduceTextLength` takes a `text` string and a `length` number as parameters.
+ * If the length of the `text` is greater than the specified `length`, it returns a substring of the
+ * `text` up to `length-3` characters followed by ellipsis (...). If the length of the `text` is less
+ * than or equal to the specified `length`,
+ */
 export function reduceTextLength(text: string, length: number) {
   if (text.length > length) {
     return `${text.substring(0, length-3)}...`;
@@ -336,6 +371,17 @@ export function reduceTextLength(text: string, length: number) {
   return text;
 }
 
+/**
+ * The function `findKeyByValue` takes an object and a value, and returns the key associated with that
+ * value in the object, if it exists.
+ * @param obj - The `obj` parameter is an object with string keys and values of any type.
+ * @param {string} value - The `value` parameter in the `findKeyByValue` function is the value that you
+ * want to search for within the object `obj`. The function will return the key associated with this
+ * value in the object, if it exists.
+ * @returns The `findKeyByValue` function returns the key of the object `obj` that corresponds to the
+ * given `value`. If a key with the specified value is found, it returns the key as a string. If no key
+ * with the specified value is found, it returns `undefined`.
+ */
 export function findKeyByValue(obj: Record<string, any>, value: string): string | undefined {
 
   
@@ -343,6 +389,18 @@ export function findKeyByValue(obj: Record<string, any>, value: string): string 
 }
 
 
+/**
+ * The function `parseNotification` extracts JSON data, subject, and metadata from a given string.
+ * @param {string} s - The `parseNotification` function takes a string `s` as input and extracts JSON
+ * data, subject, and metadata from it. The JSON data is extracted from the input string between the
+ * first occurrence of "{" and the last occurrence of "}". The function then attempts to parse the
+ * extracted JSON data. If
+ * @returns The function `parseNotification` returns an object with three properties:
+ * 1. `jsonData`: Either a string or an object parsed from the JSON string extracted from the input
+ * string `s`.
+ * 2. `subject`: The text before the JSON object in the input string `s`.
+ * 3. `metaData`: The text after the JSON object in the input string `s`.
+ */
 export function parseNotification(s: string): {
   jsonData: string | object;
   subject: string;
@@ -384,6 +442,16 @@ export function parseNotification(s: string): {
 
 
 // Helper function to get icon based on formType
+/**
+ * The function `getIconForFormType` takes a form type as input and returns an appropriate icon
+ * component based on the type.
+ * @param formType - The `formType` parameter is a type of the `PageHeadingI` interface, which can have
+ * values such as "image", "date", "email", "text", "textarea1", "textarea2", "number", "tel",
+ * "toggle", "array", "select", "
+ * @returns The function `getIconForFormType` returns an icon component based on the input `formType`.
+ * The icons returned include ImageIcon, CalendarIcon, Mail, FileText, Info, Phone, ToggleLeft, List,
+ * OptionIcon, LockKeyholeIcon, LinkIcon, and Tag.
+ */
 export const getIconForFormType = (formType: PageHeadingI['formType']) => {
   switch (formType) {
     case "image":
@@ -420,6 +488,17 @@ export const getIconForFormType = (formType: PageHeadingI['formType']) => {
 };
 
 
+/**
+ * The function `getPageType` returns a specific icon component based on the type of page provided as
+ * input.
+ * @param data - The `data` parameter in the `getPageType` function is of type `PageI['type']`, which
+ * means it is expected to be a value that corresponds to the `type` property of an object of type
+ * `PageI`. The function uses a switch statement to determine the appropriate icon component
+ * @returns The function `getPageType` returns a different icon component based on the value of the
+ * `data` parameter. If `data` is equal to 'CREATE', it returns the `<PlusCircle />` component. If
+ * `data` is equal to 'UPDATE', it returns the `<RefreshCw />` component. If `data` is equal to 'VIEW',
+ * it returns the `<ViewIcon />
+ */
 export function getPageType (data: PageI['type']) {
   
   switch (data) {

@@ -27,7 +27,7 @@ const [checked, setChecked] = useState(false)
         () => {
           if (!disabled && props.onclick) {
             setChecked(!checked);
-            console.log({ckd:checked})
+       
             
             props.onclick(!checked)
           }

@@ -713,7 +713,7 @@ useEffect(() => {
 
                         if (linkd) {
                           linkd.keyValue = da;
-                          console.log({ kvMap });
+                     
                           setKvMap((prev) => ({
                             ...prev,
                             [linkd.key]: da,

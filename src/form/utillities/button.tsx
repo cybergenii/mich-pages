@@ -1,5 +1,6 @@
 import { Loader2 } from 'lucide-react';
 import React from 'react';
+import { mergeCssClass } from './utils';
 
 interface StyledButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger' | 'outline';
@@ -21,7 +22,7 @@ const StyledButton: React.FC<StyledButtonProps> = ({
   ...props
 }) => {
   // Base styling
-  const baseStyles = 'relative flex items-center justify-center font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+  const baseStyles = 'relative  flex items-center justify-center font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   // Size variations
   const sizeStyles = {
@@ -41,13 +42,14 @@ const StyledButton: React.FC<StyledButtonProps> = ({
   // Disabled state
   const disabledStyles = 'opacity-60 cursor-not-allowed pointer-events-none';
   
-  const buttonClasses = `
-    ${baseStyles} 
-    ${sizeStyles[size]} 
-    ${variantStyles[variant]} 
-    ${(disabled || isLoading) ? disabledStyles : ''}
-    ${className}
-  `;
+  const buttonClasses = mergeCssClass(
+  
+    baseStyles, 
+    sizeStyles[size], 
+    variantStyles[variant], 
+    (disabled || isLoading) ? disabledStyles : '',
+    className,
+  )
 
   return (
     <button
@@ -56,7 +58,7 @@ const StyledButton: React.FC<StyledButtonProps> = ({
       {...props}
     >
       {isLoading && (
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <span className="absolute  left-1/2  -translate-x-1/2 -translate-y-1/2">
           <Loader2 className="animate-spin h-4 w-4" />
         </span>
       )}

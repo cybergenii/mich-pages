@@ -435,9 +435,10 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
                 <SelectChildren
                   filteredOptions={props.kv}
                   click={({ key, value }) => {
+           
                     setValue(key);
                     props.inputType.onChange &&
-                      props.inputType.onChange({ key, value });
+                      props.inputType.onChange({ key, value:value.value });
                   }}
                   closeSelect={handleOpenSelect}
                 />
@@ -593,6 +594,7 @@ const SelectChildren = ({
               {typeof v === "object" ? (
                 <div className="flex items-center justify-between">
                   {Object.entries(v).map(([subKey, subValue], ky) => {
+                    console.log({subKey,subValue})
                     return isImageURL(String(subValue)) ? (
                       <img
                         key={ky}
@@ -602,7 +604,7 @@ const SelectChildren = ({
                       />
                     ) : (
                       <div key={ky} className="truncate">
-                        {String(subValue)}
+                        {String(k)}
                       </div>
                     );
                   })}

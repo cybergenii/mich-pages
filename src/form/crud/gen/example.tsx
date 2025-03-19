@@ -53,12 +53,12 @@ unique:true,
     category: "supplier",
     placeholder: "enter user details",
     
-    formType: "select",
+    formType: "select3",
     prefixIcons: <MailSearchIcon/>,
     keyValue: {
-      'STAFF': { value:"STAFF", description:'staff'},
-      USER: {value:"USER", description:'user'},
-      TEACHER:{value: "TEACHER", description:'teacher'},
+      'STAFFs': { value:"STAFF", description:'staff'},
+      USERs: {value:"USER", description:'user'},
+      TEACHERs:{value: "TEACHER", description:'teacher'},
     },
   },
   {
@@ -162,7 +162,7 @@ const b = {
 };
 
 const da: PageI= {
-  type: "UPDATE",
+  type: "CREATE",
   headings: head,
   categories: cat,
   data: b,
@@ -176,12 +176,12 @@ const da: PageI= {
         errorMessage: "",
         create: async function (data: any): Promise<"isLoading" | "isSuccess" | "isError" | "none"> {
             console.log({ data });
-            const d = await 'none'
+            const d = await 'isLoading'
 
             return d
             
         },
-        createStatus: "none",
+        createStatus: "loading",
     }
 
 , delete: {
