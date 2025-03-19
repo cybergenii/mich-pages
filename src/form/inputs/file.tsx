@@ -43,11 +43,9 @@ export default function FileInput({ props }: { props: FileInputI }) {
                   : "focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)] focus:shadow-outline border-r-0 ",
                 focus ? "border-[var(--primary-dark)]" : " border-gray-200"
               )}
-              onClick={() => {
-                if (props.prefix && props.prefix.click) props.prefix.click();
-              }}
+          
             >
-              {props.prefix && props.prefix.element && props.prefix.element}
+              {props.prefix}
             </div>
           )}
           <input

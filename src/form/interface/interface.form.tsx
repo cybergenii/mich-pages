@@ -83,14 +83,8 @@ export interface InputI {
   showExtraInfo?: boolean;
   extraInfo?: string;
   extraInfoIcon?: any;
-  prefix?: {
-    element?: any;
-    click?: () => void;
-  };
-  suffix?: {
-    element: any;
-    click?: () => void;
-  };
+  prefix?: React.ReactElement;
+  suffix?: React.ReactElement;
 }
 
 export interface SelectI extends Omit<InputI, "inputType" | "suffix"> {
@@ -175,6 +169,8 @@ export interface FileInputI extends Omit<InputI, "inputType" | "suffix"> {
 
 
 
+/* The `PageHeadingI` interface defines the structure of an object representing a page heading in a
+form. Here is a breakdown of the properties defined in the interface: */
 export interface PageHeadingI {
   key: string;
   name: string;
@@ -195,13 +191,21 @@ export interface PageHeadingI {
   placeholder?: string;
 
   unique?: boolean;
-  prefixIcons?: any;
-  suffixIcons?: any;
+  prefixIcons?: React.ReactElement;
+  suffixIcons?: React.ReactElement;
   disabled?: boolean;
   required?: boolean;
 
   show?: boolean;
-  useRegex?: boolean;
+  useRegex?:
+    | {
+        regex: RegExp;
+        message?: string;
+      }
+    | {
+        regex: RegExp;
+        message?: string;
+      }[];
 
   keyValue?: {
     [key: string]: {

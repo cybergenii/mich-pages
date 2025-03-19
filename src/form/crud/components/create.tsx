@@ -79,128 +79,7 @@ export function CreatePage<T extends object>({
     }
   });
 
-  // useEffect(() => {
-  //   if (data.type === "UPDATE" && data.data) {
-  //     const value: InitialStateI = {};
-
-  //     Object.entries(field).map(([k, v]) => {
-  //       const heading = data.headings.find((h) => h.key === k);
-  //       if (heading?.formType === "date") {
-  //         const dte = data.data[k] && String(data.data[k]).slice(0, 10);
-  //         value[v] = {
-  //           value: dte,
-  //           isValid: true,
-  //           errorMessage: "",
-  //           validMessage: "",
-  //         };
-  //       } else if (
-  //         ["select", "select2", "select3"].includes(heading?.formType || "")
-  //       ) {
-  //         value[v] = {
-  //           value: data.data[k],
-  //           isValid: true,
-  //           errorMessage: "",
-  //           validMessage: "",
-  //         };
-  //       } else if (
-  //         isMyProperty<T>(k, data.data as T) &&
-  //         heading?.formType !== "obj"
-  //       ) {
-  //         value[v] = {
-  //           value: data.data[k],
-  //           isValid: true,
-  //           errorMessage: "",
-  //           validMessage: "",
-  //         };
-  //       }
-
-  //       data.headings
-  //         .filter((hd) => hd.formType === "array")
-  //         .map((hd) => {
-  //           if (hd.child && hd.child.length > 1) {
-  //             const dataForArr: Array<PageHeadingI & { data: any }> = [];
-
-  //             hd.child.forEach((el) => {
-  //               if (el.key === k) {
-  //                 if (el.formType === "date") {
-  //                   const dte =
-  //                     data.data[hd.key][k] &&
-  //                     String(data.data[hd.key][k]).slice(0, 10);
-  //                   value[v] = {
-  //                     value: dte,
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 } else if (
-  //                   ["select", "select2", "select3"].includes(el.formType)
-  //                 ) {
-  //                   value[v] = {
-  //                     value: data.data[hd.key][k],
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 } else if (isMyProperty<T>(k, data.data[hd.key] as T)) {
-  //                   value[v] = {
-  //                     value: data.data[hd.key][k],
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 }
-  //                 dataForArr.push({ ...el, data: data.data[hd.key] });
-  //               }
-  //             });
-  //             setArrayfield([...arrayfield, dataForArr]);
-  //           }
-  //         });
-
-  //       data.headings
-  //         .filter((d) => d.formType === "obj" && d.child && d.child.length >= 1)
-  //         .map((e) => {
-  //           if (e.child && e.child.length > 1) {
-  //             e.child.forEach((el) => {
-  //               if (el.key === k) {
-  //                 if (el.formType === "date") {
-  //                   const dte =
-  //                     data.data[e.key][k] &&
-  //                     String(data.data[e.key][k]).slice(0, 10);
-  //                   value[v] = {
-  //                     value: dte,
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 } else if (
-  //                   ["select", "select2", "select3"].includes(el.formType)
-  //                 ) {
-  //                   value[v] = {
-  //                     value: data.data[e.key][k],
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 } else if (isMyProperty<T>(k, data.data[e.key] as T)) {
-  //                   value[v] = {
-  //                     value: data.data[e.key][k],
-  //                     isValid: true,
-  //                     errorMessage: "",
-  //                     validMessage: "",
-  //                   };
-  //                 }
-  //               }
-  //             });
-  //           }
-  //         });
-  //     });
-
-  //     dispatch({
-  //       type: ActionFormTypesE.SET_KEY_VALUE,
-  //       payload: value,
-  //     });
-  //   }
-  // }, [ data.data]);
+  
 useEffect(() => {
   if (data.type === "UPDATE" && data.data) {
     const value: InitialStateI = {};
@@ -477,14 +356,13 @@ useEffect(() => {
           <div className="px-2 md:px-6">
             <SelectInput2
               props={{
-                prefix: {
-                  element: (
+                prefix: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
                       {fieldIcon}
                     </div>
                   ),
-                },
+             
                 label: hd.name,
                 placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
@@ -557,14 +435,13 @@ useEffect(() => {
           <div className="px-2 md:px-6">
             <SelectInput
               props={{
-                prefix: {
-                  element: (
+                prefix: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
                       {fieldIcon}
                     </div>
                   ),
-                },
+             
                 label: hd.name,
                 placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
@@ -650,14 +527,13 @@ useEffect(() => {
           <div className="px-2 md:px-6">
             <SelectInput3
               props={{
-                prefix: {
-                  element: (
+                prefix: (
                     <div className="w-6 h-6 text-[var(--dark-2)]">
                       {" "}
                       {fieldIcon}
                     </div>
                   ),
-                },
+               
                 label: hd.name,
                 placeholder: hd.placeholder??'',
                 err: !selector[field[hd.key]]?.isValid,
@@ -737,11 +613,13 @@ useEffect(() => {
         return (
           <div className="px-2 md:px-6 mt-8 ">
             <div className="px-2 border py-2 hover:border-gray-300 border-gray-100  flex flex-row items-center justify-between align-middle rounded-xl">
-              <span className="text-gray-700 text-sm font-medium mr-4">
-                {hd.name}
+              <span className="text-gray-700 text-sm font-medium mr-4 flex align-middle items-center">
+                {hd.name}{" "}
+                {hd.required && (
+                  <AlertCircle size={12} className=" text-red-500 ml-1" />
+                )}
               </span>
               <StyledToggle
-  
                 disabled={hd.disabled ?? false}
                 checked={Boolean(selector[field[hd.key]]?.value)}
                 id={field[hd.key]}
@@ -768,7 +646,7 @@ useEffect(() => {
                   {hd.name}
                 </span>
                 {hd.required && (
-                  <AlertCircle className="h-4 w-4 text-red-500 ml-1" />
+                  <AlertCircle size={12} className=" text-red-500 ml-1" />
                 )}
               </div>
               <StyledTextarea
@@ -797,7 +675,7 @@ useEffect(() => {
                   {hd.name}
                 </span>
                 {hd.required && (
-                  <AlertCircle className="h-4 w-4 text-red-500 ml-1" />
+                  <AlertCircle size={12} className=" text-red-500 ml-1" />
                 )}
               </div>
               <PresetQuillEditor
@@ -856,23 +734,25 @@ useEffect(() => {
                     });
                     regexCheckFormFields({
                       event: e,
-                      dispatch,
+                      dispatch, 
+                      check:hd.useRegex
+                    
                     });
                   },
                 },
-                prefix: fieldIcon && {
-                  element: (
+                prefix:(
                     <div className="w-6 h-6 text-gray-600">
                       {fieldIcon}
                     </div>
                   ),
-                },
+                
                 label: hd.name,
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
                   : selector[field[hd.key]]?.errorMessage,
                 showHelper: selector[field[hd.key]]?.showMessage,
+                suffix: hd.suffixIcons
               }}
             />
           </div>
@@ -992,14 +872,13 @@ useEffect(() => {
                                   });
                                 },
                               },
-                              prefix: hd.prefixIcons && {
-                                element: (
+                              prefix:  (
                                   <div className="w-6 h-6 text-[var(--dark-2)]">
                                     {" "}
                                     {hd.prefixIcons}
                                   </div>
                                 ),
-                              },
+                           
                               label: hd.name,
                               err: !selector[field[hd.key]]?.isValid,
                               helper: selector[field[hd.key]]?.isValid

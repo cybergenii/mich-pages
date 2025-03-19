@@ -165,15 +165,10 @@ export function Input({ props }: { props: InputI }) {
               {props.prefix && (
                 <div
                   className={mergeCssClass(
-                    "absolute inset-y-0 left-0 flex items-center pl-3",
-                    props.prefix.click ? "cursor-pointer" : ""
+                    "absolute inset-y-0 left-0 flex items-center pl-3"
                   )}
-                  onClick={() => {
-                    if (props.prefix && props.prefix.click)
-                      props.prefix.click();
-                  }}
                 >
-                  {props.prefix.element}
+                  {props.prefix}
                 </div>
               )}
 
@@ -184,7 +179,7 @@ export function Input({ props }: { props: InputI }) {
                 onMouseLeave={() => handleHover(false)}
                 onBlur={() => handleFocus(false)}
                 className={mergeCssClass(
-                  "block w-full rounded-md border-0 py-2.5 px-3 shadow-sm ring-1 ring-inset transition-all duration-200 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm",
+                  "block appearance-none w-full rounded-md border-gray-200 border  py-2.5 px-3 shadow-sm  transition-all duration-200 placeholder:text-gray-400  sm:text-sm",
                   props.prefix ? "pl-10" : "",
                   props.suffix ? "pr-10" : "",
                   props.inputType.disabled
@@ -193,8 +188,9 @@ export function Input({ props }: { props: InputI }) {
                   props.err && props.showHelper
                     ? "ring-red-500 focus:ring-red-500 text-red-900 placeholder-red-300"
                     : "ring-gray-300 focus:ring-blue-500 text-gray-900",
-                  focus ? "ring-blue-500 ring-2" : "",
-                  hover && !focus ? "ring-gray-400" : "",
+                    focus||hover?"border-blue-500":"",
+                
+
                   classN ?? ""
                 )}
               />
@@ -203,14 +199,10 @@ export function Input({ props }: { props: InputI }) {
                 <div
                   className={mergeCssClass(
                     "absolute inset-y-0 right-0 flex items-center pr-3",
-                    props.suffix.click ? "cursor-pointer" : ""
+                    "cursor-pointer"
                   )}
-                  onClick={() => {
-                    if (props.suffix && props.suffix.click)
-                      props.suffix.click();
-                  }}
                 >
-                  {props.suffix.element}
+                  {props.suffix}
                 </div>
               )}
             </div>
@@ -236,14 +228,11 @@ export function Input({ props }: { props: InputI }) {
                   <div
                     className={mergeCssClass(
                       "mr-2",
-                      props.prefix.click ? "cursor-pointer" : ""
+                   
                     )}
-                    onClick={() => {
-                      if (props.prefix && props.prefix.click)
-                        props.prefix.click();
-                    }}
+                  
                   >
-                    {props.prefix.element}
+                    {props.prefix}
                   </div>
                 )}
 

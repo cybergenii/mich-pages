@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from "react";
 
-import { Check, Info, X } from "lucide-react";
+import { Check, CircleAlert, X } from "lucide-react";
 
 import { SelectI, SelectThreeI, SelectTwoI } from "../interface/interface.form";
 import {
@@ -49,27 +49,30 @@ export function SelectInput({ props }: { props: SelectI }) {
           </label>
           {removeClassName.required && (
             <div className="text-red-600">
-              <Info />
+              <CircleAlert size={12} />
             </div>
           )}
         </div>
 
-        <div className="relative">
+        <div
+          className={mergeCssClass(
+            "relative border rounded-lg",
+            props.inputType.disabled
+              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+              : "bg-white",
+            props.err && props.showHelper
+              ? "border-red-400 focus:border-red-500 focus:ring-red-200"
+              : "border-gray-300 focus:border-blue-500 focus:ring-blue-200",
+            className ?? ""
+          )}
+        >
           {props.prefix && (
             <div
               className={mergeCssClass(
-                "absolute left-0 inset-y-0 flex items-center px-3 rounded-l-lg border-r z-10 bg-gray-50",
-                props.err && props.showHelper
-                  ? "border-red-400"
-                  : focus || hover
-                  ? "border-blue-500"
-                  : "border-gray-300"
+                "absolute left-0 inset-y-0 flex items-center px-3  z-10"
               )}
-              onClick={() => {
-                if (props.prefix && props.prefix.click) props.prefix.click();
-              }}
             >
-              {props.prefix && props.prefix.element && props.prefix.element}
+              {props.prefix}
             </div>
           )}
 
@@ -87,14 +90,7 @@ export function SelectInput({ props }: { props: SelectI }) {
               {...removeClassName}
               value={props.inputType.value}
               className={mergeCssClass(
-                "w-full rounded-lg border py-2.5 px-4 text-sm transition-all appearance-none focus:outline-none focus:ring-2",
-                props.inputType.disabled
-                  ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                  : "bg-white",
-                props.err && props.showHelper
-                  ? "border-red-400 focus:border-red-500 focus:ring-red-200"
-                  : "border-gray-300 focus:border-blue-500 focus:ring-blue-200",
-                className ?? ""
+                "w-full py-2.5 px-4 text-sm transition-all appearance-none border-0 focus:border-0 hover:border-0 "
               )}
             >
               <option selected disabled>
@@ -178,11 +174,11 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
               props.err && props.showHelper ? "text-red-600" : "text-gray-700"
             )}
           >
-            {capitalize( props.label )}
+            {capitalize(props.label)}
           </label>
           {removeClassName.required && (
             <div className="text-red-600">
-              <Info />
+              <CircleAlert size={12} />
             </div>
           )}
         </div>
@@ -195,7 +191,7 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
           )}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-            {Object.entries(props.kv).map(([k, v ], key) => (
+            {Object.entries(props.kv).map(([k, v], key) => (
               <div key={key} className="col-span-1">
                 <div
                   className={mergeCssClass(
@@ -213,15 +209,11 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
                   <div className="flex h-full flex-col">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-2">
-                        {props.prefix && props.prefix.element && (
+                        {props.prefix && (
                           <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (props.prefix && props.prefix.click)
-                                props.prefix.click();
-                            }}
+                        
                           >
-                            {props.prefix.element}
+                            {props.prefix}
                           </div>
                         )}
                         <div className="font-medium text-sm capitalize text-gray-800">
@@ -238,7 +230,7 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
                       >
                         {picked && picked === (v as any).value && (
                           <div className="text-blue-600">
-                            <Check/>
+                            <Check />
                           </div>
                         )}
                       </div>
@@ -296,7 +288,7 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setValue(String(props.inputType.value));
+    // setValue(String(props.inputType.value));
     setSelectPlaceholder(props.placeholder);
   }, [props.inputType.value, props.placeholder]);
 
@@ -339,31 +331,36 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
               props.err && props.showHelper ? "text-red-600" : "text-gray-700"
             )}
           >
-            {capitalize( props.label )}
+            {capitalize(props.label)}
           </label>
           {removeClassName.required && (
             <div className="text-red-600">
-              <Info />
+              <CircleAlert size={12} />
             </div>
           )}
         </div>
 
-        <div className="relative">
+        <div
+          className={mergeCssClass(
+            "relative border rounded-lg ",
+            props.inputType.disabled
+              ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+              : "bg-white",
+            props.err && props.showHelper
+              ? "border-red-400"
+              : focus || hover || openSelect
+              ? "border-blue-500 shadow-sm"
+              : "border-gray-200"
+          )}
+        >
           {props.prefix && (
             <div
               className={mergeCssClass(
-                "absolute left-0 inset-y-0 flex items-center px-3 rounded-l-lg border-r z-10 bg-gray-50",
-                props.err && props.showHelper
-                  ? "border-red-400"
-                  : focus || hover
-                  ? "border-blue-500"
-                  : "border-gray-300"
+                "absolute left-0 inset-y-0 flex items-center px-3  z-10",
+              
               )}
-              onClick={() => {
-                if (props.prefix && props.prefix.click) props.prefix.click();
-              }}
             >
-              {props.prefix.element}
+              {props.prefix}
             </div>
           )}
 
@@ -384,15 +381,7 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
           >
             <div
               className={mergeCssClass(
-                "w-full rounded-lg border py-2.5 px-4 text-sm transition-all flex items-center",
-                props.inputType.disabled
-                  ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                  : "bg-white",
-                props.err && props.showHelper
-                  ? "border-red-400"
-                  : focus || hover || openSelect
-                  ? "border-blue-500 shadow-sm"
-                  : "border-gray-300"
+                "w-full  py-2.5 px-4 text-sm transition-all flex items-center"
               )}
             >
               <span
@@ -435,10 +424,9 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
                 <SelectChildren
                   filteredOptions={props.kv}
                   click={({ key, value }) => {
-           
                     setValue(key);
                     props.inputType.onChange &&
-                      props.inputType.onChange({ key, value:value.value });
+                      props.inputType.onChange({ key, value: value.value });
                   }}
                   closeSelect={handleOpenSelect}
                 />
@@ -455,7 +443,7 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
           }`}
         >
           <div className="h-5 w-5 flex-shrink-0">
-            {props.err ? <X /> : <Check/>}
+            {props.err ? <X /> : <Check />}
           </div>
           <div className="text-xs">{props.helper}</div>
         </div>
