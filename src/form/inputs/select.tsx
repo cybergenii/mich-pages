@@ -582,7 +582,7 @@ const SelectChildren = ({
               {typeof v === "object" ? (
                 <div className="flex items-center justify-between">
                   {Object.entries(v).map(([subKey, subValue], ky) => {
-                    console.log({subKey,subValue})
+        
                     return isImageURL(String(subValue)) ? (
                       <img
                         key={ky}

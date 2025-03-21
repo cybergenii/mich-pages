@@ -1,3 +1,4 @@
+ 
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -23,7 +24,7 @@ import { capitalize, findKeyByValue, getIconForFormType, parseNotification, Rend
 
 
 export function CreatePage<T extends object>({
-  data,
+  data
 }: {
   data: Pick<PageI, "name" | "headings" | "categories" | "type" | "data">;
 }) {
@@ -46,6 +47,7 @@ export function CreatePage<T extends object>({
   const requiredField: Record<string, string> = {};
   const selector = useTableContext().state;
   const dispatch = useTableContext().dispatch;
+
 
   data.headings.forEach((heading) => {
     if (heading.formType === "obj" && heading.child) { 
@@ -629,6 +631,8 @@ useEffect(() => {
                     payload: {
                       [field[hd.key]]: {
                         value: e,
+                        isValid: true,
+                        showMessage: false,
                       },
                     },
                   });
@@ -657,6 +661,7 @@ useEffect(() => {
                     payload: {
                       [field[hd.key]]: {
                         value: e.target.value,
+                           isValid:hd.required?  e.target?.value && e.target.value.length > 0:true,
                       },
                     },
                   });
@@ -686,6 +691,8 @@ useEffect(() => {
                     payload: {
                       [field[hd.key]]: {
                         value: id,
+                        isValid:hd.required?  id && id.length > 0:true,
+                        
                       },
                     },
                   });

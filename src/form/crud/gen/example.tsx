@@ -2,7 +2,7 @@ import { Calendar, LucideView, MailSearchIcon, Phone, Salad, User } from "lucide
 
 import { useState } from "react";
 import { PageCategoriesI, PageHeadingI, PageI } from "../../interface/interface.form";
-import { NewPage } from "../../page";
+import { NewCreatePage, NewPageUi, NewSubmitPage } from "../../page";
 
 
 
@@ -239,5 +239,14 @@ export function ExchangeSettings () {
       updateStatus: "none",
     },
   };
-  return <NewPage data={da}  />;
+  return <><NewPageUi data={da} children={ 
+  
+  
+    <> <NewCreatePage data={da} />
+      <NewSubmitPage data={da}  />
+   
+   
+   </>
+    
+  } /></>;
 }

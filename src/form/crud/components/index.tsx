@@ -11,7 +11,7 @@ import { SubmitPage } from "./submit";
 import { ViewPage } from "./view";
 
 
-export function Page({ data }: { data: PageI }) {
+export function Page({ data }: { data: PageI}) {
   const showHeading = data.showHeading ?? true;
   const showButton = data.showButton?.any ?? true;
   
@@ -61,7 +61,7 @@ export function Page({ data }: { data: PageI }) {
 
             {showButton && (
               <div className="px-6 pb-6">
-                <SubmitPage data={data} />
+                <SubmitPage data={data}  />
               </div>
             )}
           </div>

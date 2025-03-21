@@ -201,7 +201,8 @@ const ArrayField = ({
   );
 };
 
-export function ViewPage({ data }: ViewPageProps) {
+export function ViewPage ({ data }: ViewPageProps) {
+  
   const name = data.name.toLowerCase().trim();
   const fieldName = name.split(" ").join("-") + "-form";
 

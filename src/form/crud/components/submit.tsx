@@ -1,3 +1,4 @@
+ 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
@@ -6,9 +7,10 @@ import toast from "react-hot-toast";
 import { Plus, RefreshCw, RotateCw, Trash2 } from "lucide-react";
 
 
-import { useTableContext } from "../../hooks/form/context";
 import { validateFormKeys } from "../../hooks/validateFields";
 import { PageI } from "../../interface/interface.form";
+
+import { useTableContext } from "../../hooks/form/context";
 import { ActionFormTypesE } from "../../state-manager/form/state-actions";
 import StyledButton from "../../utillities/button";
 import { deleteEmptyKeysAndValues } from "../../utillities/delete-empty-kv";
@@ -16,7 +18,7 @@ import { DeleteModal, Modal } from "../../utillities/modals";
 import { successToast } from "../../utillities/toaster";
 import { splitByUppercase } from "../../utillities/utils";
 
-export function SubmitPage({ data }: { data: PageI }) {
+export function SubmitPage({ data }: { data: PageI}) {
   const name = data.name.toLowerCase().trim();
   const fieldName = name.split(" ").join("-") + "-form";
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,6 +27,7 @@ export function SubmitPage({ data }: { data: PageI }) {
   const requiredField: Record<string, string> = {};
   const selector = useTableContext().state
   const dispatch = useTableContext().dispatch;
+  //  const { state: selector, dispatch } = useSharedState(data)
 
   data.headings.forEach((heading) => {
     if (heading.formType === "obj" && heading.child) {
@@ -192,8 +195,12 @@ export function SubmitPage({ data }: { data: PageI }) {
           Object.entries(requiredField).map(([_, value]) => {
             validateValues[value] = selector[value];
           });
+          console.log({validateValues})
 
           const validator = validateFormKeys(validateValues, dispatch);
+        
+          
+
 
           if (data.create && data.create.create && validator) {
             const submit = await data.create.create(deleteEmptyKV);
