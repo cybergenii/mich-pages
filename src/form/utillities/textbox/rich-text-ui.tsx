@@ -293,6 +293,7 @@ const PresetQuillEditor = ({
   return (
     <Editor
       ref={quillRef}
+      
       readOnly={readOnly}
       defaultValue={initialDelta}
       onSelectionChange={(newRange) => setRange(newRange)}

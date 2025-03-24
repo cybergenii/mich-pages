@@ -59,8 +59,8 @@ export function ExchangeSettings () {
       placeholder: "enter user details",
       required: true,
 
-      formType: "select",
-      prefixIcons: <MailSearchIcon />,
+      formType: "textarea2",
+      prefixIcons: <MailSearchIcon />,  disabled:true,
       keyValue: {
         STAFFs: { value: "STAFF", description: "staff" },
         USERs: { value: "USER", description: "user" },
@@ -146,6 +146,7 @@ export function ExchangeSettings () {
       required: true,
       formType: "number",
       prefixIcons: <Salad />,
+    
     },
     {
       key: "hireDate",

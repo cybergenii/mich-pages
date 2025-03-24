@@ -150,8 +150,9 @@ export function Input({ props }: { props: InputI }) {
               <label
                 className={mergeCssClass(
                   "text-sm font-medium",
-                  focus ? "text-blue-600" : "text-gray-700",
-                  props.err && props.showHelper ? "text-red-600" : ""
+                  focus ? "text-blue-600" : "",
+                  props.err && props.showHelper ? "text-red-600" : "",
+                  props.inputType.disabled ? "text-gray-500" : "text-gray-700"
                 )}
               >
                 {props.label}
@@ -165,7 +166,10 @@ export function Input({ props }: { props: InputI }) {
               {props.prefix && (
                 <div
                   className={mergeCssClass(
-                    "absolute inset-y-0 left-0 flex items-center pl-3"
+                    "absolute inset-y-0 left-0 flex items-center pl-3 ",
+                    props.inputType.disabled
+                      ? "cursor-not-allowed opacity-50"
+                      : "cursor-pointer"
                   )}
                 >
                   {props.prefix}
@@ -187,9 +191,8 @@ export function Input({ props }: { props: InputI }) {
                     : "",
                   props.err && props.showHelper
                     ? "ring-red-500 focus:ring-red-500 text-red-900 placeholder-red-300"
-                    : "ring-gray-300 focus:ring-blue-500 text-gray-900",
-                    focus||hover?"border-blue-500":"",
-                
+                    : "ring-gray-300 focus:ring-blue-500 disabled:text-gray-500 disabled:bg-gray-100 text-gray-900",
+                  focus || hover ? "border-blue-500" : "",
 
                   classN ?? ""
                 )}

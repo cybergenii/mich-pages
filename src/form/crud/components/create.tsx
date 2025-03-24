@@ -20,7 +20,7 @@ import StyledTextarea from "../../utillities/textbox/textarea";
 import { convertDateFormat } from "../../utillities/time-magic";
 import { errorToast } from "../../utillities/toaster";
 import StyledToggle from "../../utillities/toggle";
-import { capitalize, findKeyByValue, getIconForFormType, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
+import { capitalize, findKeyByValue, getIconForFormType, mergeCssClass, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
 
 
 export function CreatePage<T extends object>({
@@ -359,14 +359,14 @@ useEffect(() => {
             <SelectInput2
               props={{
                 prefix: (
-                    <div className="w-6 h-6 text-[var(--dark-2)]">
-                      {" "}
-                      {fieldIcon}
-                    </div>
-                  ),
-             
+                  <div className="w-6 h-6 text-[var(--dark-2)]">
+                    {" "}
+                    {fieldIcon}
+                  </div>
+                ),
+
                 label: hd.name,
-                placeholder: hd.placeholder??'',
+                placeholder: hd.placeholder ?? "",
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
@@ -421,12 +421,23 @@ useEffect(() => {
 
                         if (linkd) {
                           linkd.keyValue = da;
+
+                          setKvMap((prev) => ({
+                            ...prev,
+                            [linkd.key]: da,
+                          }));
                         }
                       }
                     }
                   },
                 },
-                kv: hd.keyValue ? hd.keyValue : {},
+                kv: hd.keyValue
+                  ? hd.isKeyValueChild
+                    ? kvMap[hd.key]
+                      ? kvMap[hd.key]
+                      : hd.keyValue
+                    : hd.keyValue
+                  : {},
               }}
             />
           </div>
@@ -479,36 +490,36 @@ useEffect(() => {
                         return (
                           String(
                             d[hd.filter!.parentFilterKey ?? hd.key]
-                          ).toLowerCase() ===
-                          String(e.target.value).toLowerCase()
+                          ).toLowerCase() === String(e.target.value).toLowerCase()
                         );
                       });
-
                       if (filter) {
                         // reduce to object having key value pair
                         const da = (
                           filter[hd.filter.arrKey] as Record<string, any>[]
                         ).reduce((acc, curr) => {
-                          acc[curr[hd.filter!.childKey]] =
-                            curr[hd.filter!.childValue];
+                          acc[curr[hd.filter!.childKey]] = {
+                            value: curr[hd.filter!.childValue],
+                            description: hd.filter?.childDescription
+                              ? curr[hd.filter.childDescription]
+                              : "",
+                          };
                           return acc;
                         }, {} as Record<string, any>);
 
                         const linkd = data.headings.find(
                           (h) => h.key === hd.filter!.linkToChildKey
                         );
+
                         if (linkd) {
-                          setKvMap((prev) => ({
-                            ...prev,
-                            [linkd.key]: da,
-                          }));
                           linkd.keyValue = da;
+
+                            setKvMap((prev) => ({
+                              ...prev,
+                              [linkd.key]: da,
+                            }));
                         }
                       }
-                      // now we want to update the kv of the
-                      // child with the data how can the parent now send this data to child select options
-                      // we can use the kv prop to send the data to the child
-                      // can i get a way to update the kv of the child
                     }
                   },
                 },
@@ -530,14 +541,14 @@ useEffect(() => {
             <SelectInput3
               props={{
                 prefix: (
-                    <div className="w-6 h-6 text-[var(--dark-2)]">
-                      {" "}
-                      {fieldIcon}
-                    </div>
-                  ),
-               
+                  <div className="w-6 h-6 text-[var(--dark-2)]">
+                    {" "}
+                    {fieldIcon}
+                  </div>
+                ),
+
                 label: hd.name,
-                placeholder: hd.placeholder??'',
+                placeholder: hd.placeholder ?? "",
                 err: !selector[field[hd.key]]?.isValid,
                 helper: selector[field[hd.key]]?.isValid
                   ? selector[field[hd.key]]?.validMessage
@@ -580,8 +591,12 @@ useEffect(() => {
                         const da = (
                           filter[hd.filter.arrKey] as Record<string, any>[]
                         ).reduce((acc, curr) => {
-                          acc[curr[hd.filter!.childKey]] =
-                            curr[hd.filter!.childValue];
+                          acc[curr[hd.filter!.childKey]] = {
+                            value: curr[hd.filter!.childValue],
+                            description: hd.filter?.childDescription
+                              ? curr[hd.filter.childDescription]
+                              : "",
+                          };
                           return acc;
                         }, {} as Record<string, any>);
 
@@ -591,7 +606,7 @@ useEffect(() => {
 
                         if (linkd) {
                           linkd.keyValue = da;
-                     
+
                           setKvMap((prev) => ({
                             ...prev,
                             [linkd.key]: da,
@@ -601,9 +616,11 @@ useEffect(() => {
                     }
                   },
                 },
-                kv: hd.key
+                kv: hd.keyValue
                   ? hd.isKeyValueChild
                     ? kvMap[hd.key]
+                      ? kvMap[hd.key]
+                      : hd.keyValue
                     : hd.keyValue
                   : {},
               }}
@@ -615,7 +632,12 @@ useEffect(() => {
         return (
           <div className="px-2 md:px-6 mt-8 ">
             <div className="px-2 border py-2 hover:border-gray-300 border-gray-100  flex flex-row items-center justify-between align-middle rounded-xl">
-              <span className="text-gray-700 text-sm font-medium mr-4 flex align-middle items-center">
+              <span
+                className={mergeCssClass(
+                  "text-sm font-medium mr-4 flex align-middle items-center",
+                  hd.disabled ? "text-gray-500" : "text-gray-700 "
+                )}
+              >
                 {hd.name}{" "}
                 {hd.required && (
                   <AlertCircle size={12} className=" text-red-500 ml-1" />
@@ -646,7 +668,9 @@ useEffect(() => {
           <div className="px-2 md:px-6">
             <div className="flex flex-col w-full mt-4">
               <div className="flex items-center mb-2">
-                <span className="text-gray-700 text-sm font-medium">
+                <span className={mergeCssClass(" text-sm font-medium",
+                  hd.disabled ? "text-gray-500" : "text-gray-700 "
+                )}>
                   {hd.name}
                 </span>
                 {hd.required && (
@@ -655,6 +679,7 @@ useEffect(() => {
               </div>
               <StyledTextarea
                 value={selector[field[hd.key]]?.value}
+                disabled={hd.disabled ?? false}
                 onChange={(e) => {
                   dispatch({
                     type: ActionFormTypesE.SET_KEY_VALUE,
@@ -676,7 +701,9 @@ useEffect(() => {
           <div className="px-2 md:px-6">
             <div className="flex flex-col w-full mt-4">
               <div className="flex items-center mb-2">
-                <span className="text-gray-700 text-sm font-medium">
+                <span className={mergeCssClass(" text-sm font-medium",
+                  hd.disabled ? "text-gray-500" : "text-gray-700 "
+                )}>
                   {hd.name}
                 </span>
                 {hd.required && (
@@ -685,6 +712,7 @@ useEffect(() => {
               </div>
               <PresetQuillEditor
                 initialValue={selector[field[hd.key]]?.value}
+                readOnly={hd.disabled ?? false}
                 onChange={(id: any) => {
                   dispatch({
                     type: ActionFormTypesE.SET_KEY_VALUE,

@@ -42,7 +42,8 @@ export function SelectInput({ props }: { props: SelectI }) {
           <label
             className={mergeCssClass(
               "text-sm font-medium",
-              props.err && props.showHelper ? "text-red-600" : "text-gray-700"
+              props.err && props.showHelper ? "text-red-600" : "",
+              props.inputType.disabled ? "text-gray-500" : "text-gray-700"
             )}
           >
             {capitalize(props.label)}
@@ -69,7 +70,10 @@ export function SelectInput({ props }: { props: SelectI }) {
           {props.prefix && (
             <div
               className={mergeCssClass(
-                "absolute left-0 inset-y-0 flex items-center px-3  z-10"
+                "absolute left-0 inset-y-0 flex items-center px-3  z-10",
+                props.inputType.disabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer"
               )}
             >
               {props.prefix}
@@ -186,7 +190,7 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
         <div
           className={mergeCssClass(
             "relative",
-            props.inputType.disabled ? "opacity-60" : "",
+            props.inputType.disabled ? "opacity-50" : "",
             props.err && props.showHelper ? "border-red-400" : ""
           )}
         >
@@ -197,25 +201,23 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
                   className={mergeCssClass(
                     "h-28 rounded-lg p-4 transition-all cursor-pointer hover:shadow-md",
                     picked && picked === (v as any).value
-                      ? "border-2 border-blue-500 bg-blue-50"
+                      ? props.inputType.disabled
+                        ? "border-1 border-blue-100 bg-gray-50"
+                        : "border-2 border-blue-500 bg-blue-50"
                       : "border border-gray-200 bg-white shadow-sm hover:border-blue-300"
                   )}
                   onClick={() => {
-                    setPicked((v as any).value);
-                    props.inputType.onChange &&
-                      props.inputType.onChange({ key: k, value: v });
+                    if (!props.inputType.disabled) {
+                      setPicked((v as any).value);
+                      props.inputType.onChange &&
+                        props.inputType.onChange({ key: k, value: v });
+                    }
                   }}
                 >
                   <div className="flex h-full flex-col">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-2">
-                        {props.prefix && (
-                          <div
-                        
-                          >
-                            {props.prefix}
-                          </div>
-                        )}
+                        {props.prefix && <div>{props.prefix}</div>}
                         <div className="font-medium text-sm capitalize text-gray-800">
                           {k}
                         </div>
@@ -228,7 +230,7 @@ export function SelectInput2({ props }: { props: SelectTwoI }) {
                             : "border-gray-300 bg-gray-50"
                         )}
                       >
-                        {picked && picked === (v as any).value && (
+                        {picked  && picked === (v as any).value && (
                           <div className="text-blue-600">
                             <Check />
                           </div>
@@ -328,7 +330,8 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
           <label
             className={mergeCssClass(
               "text-sm font-medium",
-              props.err && props.showHelper ? "text-red-600" : "text-gray-700"
+              props.err && props.showHelper ? "text-red-600" : "",
+              props.inputType.disabled ? "text-gray-500" : "text-gray-700"
             )}
           >
             {capitalize(props.label)}
@@ -348,7 +351,7 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
               : "bg-white",
             props.err && props.showHelper
               ? "border-red-400"
-              : focus || hover || openSelect
+              : (focus || hover || openSelect) && !props.inputType.disabled
               ? "border-blue-500 shadow-sm"
               : "border-gray-200"
           )}
@@ -357,7 +360,10 @@ export function SelectInput3({ props }: { props: SelectThreeI }) {
             <div
               className={mergeCssClass(
                 "absolute left-0 inset-y-0 flex items-center px-3  z-10",
-              
+
+                props.inputType.disabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer"
               )}
             >
               {props.prefix}
