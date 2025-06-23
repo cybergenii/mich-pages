@@ -159,6 +159,9 @@ export const platform = () => {
 
 
 export const capitalize = ( text: string ) => {
+
+
+  console.log({text})
   const __text = text ?? "";
   let _text = __text.charAt(0).toUpperCase() + __text.slice(1);
 
@@ -387,6 +390,30 @@ export function findKeyByValue(obj: Record<string, any>, value: string): string 
   
   return Object.keys(obj).find(key => obj[key] === value);
 }
+
+
+/**
+ * The function `findKeyByValueInSelect` searches for a key in an object based on a specific value
+ * within the object's properties.
+ * @param obj - The `obj` parameter is an object with keys of type string and values of type object
+ * with properties `value` of type string and `description` of type string.
+ * @param {string} value - The `value` parameter in the `findKeyByValueInSelect` function is the string
+ * value that you want to search for within the `value` property of the objects in the provided object
+ * `obj`. The function will return the key of the object that contains the specified `value` in its
+ * @returns The function `findKeyByValueInSelect` returns a string representing the key of the object
+ * where the `value` property matches the provided `value` parameter. If no match is found, it returns
+ * `undefined`.
+ */
+export function findKeyByValueInSelect (obj: Record<string, {
+  value: string,
+  description: string
+}>, value: string): string | undefined {
+
+  
+  return Object.keys(obj).find(key => obj[key].value === value);
+}
+
+
 
 
 /**

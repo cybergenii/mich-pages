@@ -20,7 +20,7 @@ import StyledTextarea from "../../utillities/textbox/textarea";
 import { convertDateFormat } from "../../utillities/time-magic";
 import { errorToast } from "../../utillities/toaster";
 import StyledToggle from "../../utillities/toggle";
-import { capitalize, findKeyByValue, getIconForFormType, mergeCssClass, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
+import { capitalize, findKeyByValue, findKeyByValueInSelect, getIconForFormType, mergeCssClass, parseNotification, RenderHtml, splitByUppercase } from "../../utillities/utils";
 
 
 export function CreatePage<T extends object>({
@@ -1019,6 +1019,7 @@ export function ArrayDetails({ data }: { data: PageHeadingI & { data: any } }) {
     }
   };
 
+
   return (
     <div className="w-full">
       {formType === "image" && (
@@ -1069,7 +1070,7 @@ export function ArrayDetails({ data }: { data: PageHeadingI & { data: any } }) {
                   />
                 ) : (
                   capitalize(
-                        data.keyValue ? findKeyByValue(data.keyValue, data.data) : data.data 
+                        data.keyValue ? findKeyByValueInSelect(data.keyValue, data.data) : data.data 
                       ) 
                 )
               ) : formType === "date" ? (

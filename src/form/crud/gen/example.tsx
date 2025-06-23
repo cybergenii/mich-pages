@@ -49,6 +49,21 @@ export function ExchangeSettings () {
           formType: "text",
           prefixIcons: <User />,
         },
+        {
+          key: "userType",
+          name: "userType",
+
+          category: "members",
+          placeholder: "enter user details",
+
+          formType: "select",
+          keyValue: {
+            STAFFs: { value: "STAFF", description: "staff" },
+            USERs: { value: "USER", description: "user" },
+            TEACHERs: { value: "TEACHER", description: "teacher" },
+          },
+          prefixIcons: <User />,
+        },
       ],
     },
     {
