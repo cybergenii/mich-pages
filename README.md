@@ -1,36 +1,27 @@
 # Mich-Pages
 
-A powerful React library for quickly generating Create, Read, Update, and Delete (CRUD) pages with minimal code. It comes with custom components like Input, Select1, Select2, Select3, TextArea1, TextArea2, Toggle, and FileUpload that you can use throughout your project.
+[![npm version](https://badge.fury.io/js/mich-pages.svg)](https://badge.fury.io/js/mich-pages)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![GitHub stars](https://img.shields.io/github/stars/derekzyl/mich-pages.svg)](https://github.com/derekzyl/mich-pages)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/mich-pages)](https://bundlephobia.com/package/mich-pages)
+[![npm downloads](https://img.shields.io/npm/dw/mich-pages)](https://www.npmjs.com/package/mich-pages)
 
-## Table of Contents
+A powerful React library for rapidly generating Create, Read, Update, and Delete (CRUD) pages with minimal code. Built with TypeScript and featuring a comprehensive set of form components for modern web applications.
 
-- [Installation](#installation)
-- [Features](#features)
-- [Usage](#usage)
-  - [Basic Example](#basic-example)
-  - [Component API](#component-api)
-- [Configuration](#configuration)
-  - [Page Configuration](#page-configuration)
-  - [Field Types](#field-types)
-  - [Category System](#category-system)
-- [Advanced Usage](#advanced-usage)
-  - [Custom Styling](#custom-styling)
-  - [Form Validation](#form-validation)
-  - [Nested Fields](#nested-fields)
-  - [Array Fields](#array-fields)
-  - [Password Fields](#password-fields)
-- [Components](#components)
-  - [Input Component](#input-component)
-  - [Select Components](#select-components)
-  - [File Input](#file-input)
-  - [Rich Text Editor](#rich-text-editor)
-- [TypeScript Support](#typescript-support)
-- [Examples](#examples)
-- [Image Examples](#image-examples)
-- [Contributing](#contributing)
-- [License](#license)
+## ✨ Features
 
-## Installation
+- 🚀 **Rapid Development**: Create full CRUD pages with just configuration objects
+- 🎨 **Rich Components**: Input, Select (3 variants), TextArea, Toggle, FileUpload, and more
+- 📱 **Responsive Design**: Mobile-first approach with beautiful UI out of the box
+- 🔒 **TypeScript Support**: Full type safety and excellent developer experience
+- 🎯 **Form Validation**: Built-in validation with regex support and custom error messages
+- 📁 **File Handling**: Drag-and-drop file uploads with image preview
+- 📝 **Rich Text Editor**: Integrated Quill editor for rich content
+- 🏗️ **Flexible Architecture**: Support for nested fields, arrays, and complex data structures
+- 🎭 **Customizable**: Extensive theming and styling options
+
+## 📦 Installation
 
 ```bash
 # Using npm
@@ -43,61 +34,42 @@ yarn add mich-pages
 pnpm add mich-pages
 ```
 
-## Features
-
-- 🚀 Rapidly create CRUD pages with minimal code
-- 🎇 Custom Input, Select1, Select2, Select3, TextArea1, TextArea2, Toggle, and FileUpload components
-- 🧩 Supports multiple field types (text, number, date, select, toggle, etc.)
-- 📋 Organized category system for grouping related fields
-- 🔄 Built-in create, view, update, and delete functionality
-- 🎨 Customizable styling options
-- 📱 Responsive design out of the box
-- 🔒 TypeScript support for type safety
-- 📁 Support for file uploads and image handling
-- 📝 Rich text editor support
-
-## Usage
-
-### Basic Example
+## 🚀 Quick Start
 
 ```jsx
 import React from 'react';
 import { NewPage } from 'mich-pages';
-import { User, Phone, Calendar } from 'lucide-react';
+import { User, Phone } from 'lucide-react';
 
 const pageConfig = {
   type: "CREATE",
-  name: "Company",
-  icon: <Calendar />,
-  id: "company-form",
-  style: {},
+  name: "User Profile",
+  icon: <User />,
+  id: "user-form",
   categories: [
-    { key: "staff", name: "Staff" },
-    { key: "customer", name: "Customer" }
+    { key: "personal", name: "Personal Information" }
   ],
   headings: [
     {
       key: "name",
-      name: "Name",
-      category: "staff",
-      placeholder: "Enter company name",
+      name: "Full Name",
+      category: "personal",
+      placeholder: "Enter your full name",
       formType: "text",
       prefixIcons: <User />,
       required: true
     },
     {
-      key: "phoneNumber",
+      key: "phone",
       name: "Phone Number",
-      category: "staff",
+      category: "personal",
       placeholder: "Enter phone number",
       formType: "text",
       prefixIcons: <Phone />
     }
   ],
-  data: {}, // Initial data
-  showButton: {
-    createButton: true
-  },
+  data: {},
+  showButton: { createButton: true },
   create: {
     create: async (data) => {
       console.log("Form submitted:", data);
@@ -107,515 +79,312 @@ const pageConfig = {
   }
 };
 
-export function CompanyForm() {
+export function UserForm() {
   return <NewPage data={pageConfig} />;
 }
 ```
 
-### Component API
+## 📖 Documentation
 
-The library exports several components for different use cases:
+### Core Components
 
-```jsx
-import {
-  NewPage,           // General purpose page component
-  NewCreatePage,     // Specifically for creation forms
-  NewViewPage,       // For view-only pages
-  NewSubmitPage,     // For submission forms
-  NewPageUi,         // Base UI component for custom implementations
-  FileInput,         // File Upload UI with drag and drop features
-  Input,             // Custom Input with error checking
-  PresetQuillEditor, // Rich text editor
-  SelectInput,       // Custom select input
-  SelectInput2,      // Card-like select feature
-  SelectInput3,      // Select with search bar
-  StyledButton       // Normal styled button
-} from 'mich-pages';
-```
+| Component | Description |
+|-----------|-------------|
+| `NewPage` | General purpose page component for all CRUD operations |
+| `NewCreatePage` | Specialized component for creation forms |
+| `NewViewPage` | Read-only view component |
+| `NewSubmitPage` | Form submission component |
+| `NewPageUi` | Base UI component for custom implementations |
 
-## Configuration
+### Form Components
 
-### Page Configuration
-
-The `PageI` interface defines the structure for page configuration:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `type` | `"CREATE" \| "UPDATE" \| "VIEW"` | The type of page |
-| `name` | `string` | Page title |
-| `icon` | `ReactNode` | Icon to display with the title |
-| `id` | `string` | Unique identifier for the page |
-| `style` | `object` | Custom styling options with primary, secondary, and tertiary colors |
-| `categories` | `PageCategoriesI[]` | Categories for organizing fields |
-| `headings` | `PageHeadingI[]` | Fields to display on the page |
-| `data` | `Record<string, any>` | Initial data for the form |
-| `showButton` | `object` | Control visibility of action buttons (create, update, delete) |
-| `create` | `object` | Configuration for create operations |
-| `update` | `object` | Configuration for update operations |
-| `delete` | `object` | Configuration for delete operations |
-| `extraInfo` | `string` | Additional information about the page |
-| `showHeading` | `boolean` | Whether to show the page heading |
+| Component | Description |
+|-----------|-------------|
+| `Input` | Enhanced input with validation and error handling |
+| `SelectInput` | Standard dropdown select |
+| `SelectInput2` | Card-style selection interface |
+| `SelectInput3` | Advanced select with search functionality |
+| `FileInput` | Drag-and-drop file upload with preview |
+| `PresetQuillEditor` | Rich text editor |
+| `StyledButton` | Customizable button component |
 
 ### Field Types
 
-Mich-Pages supports various field types:
+| Type | Description | Use Case |
+|------|-------------|----------|
+| `text` | Standard text input | Names, titles, descriptions |
+| `email` | Email input with validation | Email addresses |
+| `password` | Password input with toggle | Secure text entry |
+| `number` | Numeric input | Ages, quantities, prices |
+| `date` | Date picker | Birthdays, deadlines |
+| `select` | Dropdown selection | Categories, statuses |
+| `select2` | Card-based selection | Visual choices |
+| `select3` | Searchable dropdown | Large option lists |
+| `toggle` | Switch/checkbox | Boolean values |
+| `textarea1` | Single-line text area | Short descriptions |
+| `textarea2` | Rich text editor | Long content |
+| `file` | File upload | Documents, images |
+| `array` | Repeating field groups | Multiple entries |
+| `obj` | Nested object fields | Complex data structures |
 
-- `text`: Standard text input
-- `password`: Password input with show/hide toggle
-- `email`: Email input
-- `number`: Numeric input
-- `date`: Date picker
-- `datetime-local`: Date and time picker
-- `select`: Dropdown selection
-- `select2`: Enhanced dropdown selection with card-like UI
-- `select3`: Advanced dropdown selection with search capabilities
-- `toggle`: Toggle switch
-- `textarea1`: Single-line text area
-- `textarea2`: Multi-line text area with rich text capabilities
-- `array`: Array of nested fields
-- `image`: Image upload field
-- `file`: File upload field
-- `obj`: Object field with nested properties
-- `rawHtml`: Raw HTML content
+## 🔧 Configuration
 
-### Category System
+### Page Configuration
 
-Categories help organize fields into logical groups:
-
-```jsx
-const categories = [
-  { key: "personal", name: "Personal Information" },
-  { key: "contact", name: "Contact Details" },
-  { key: "employment", name: "Employment Information" }
-];
+```typescript
+interface PageI {
+  type: "CREATE" | "UPDATE" | "VIEW";
+  name: string;
+  icon: ReactNode;
+  id: string;
+  style?: {
+    primary?: string;
+    secondary?: string;
+    tertiary?: string;
+  };
+  categories: PageCategoriesI[];
+  headings: PageHeadingI[];
+  data: Record<string, any>;
+  showButton?: {
+    createButton?: boolean;
+    updateButton?: boolean;
+    deleteButton?: boolean;
+  };
+  create?: CreateConfig;
+  update?: UpdateConfig;
+  delete?: DeleteConfig;
+  extraInfo?: string;
+  showHeading?: boolean;
+}
 ```
 
-## Advanced Usage
-
-### Custom Styling
+### Advanced Field Configuration
 
 ```jsx
-const pageConfig = {
-  // ...other config
-  style: {
-    primary: "#3b82f6",    // Primary color
-    secondary: "#6b7280",  // Secondary color
-    tertiary: "#1e293b"    // Tertiary color
-  }
+const advancedField = {
+  key: "email",
+  name: "Email Address",
+  category: "contact",
+  placeholder: "Enter your email",
+  formType: "email",
+  required: true,
+  prefixIcons: <Mail />,
+  suffixIcons: <Check />,
+  helper: "We'll never share your email",
+  useRegex: [
+    {
+      regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      message: "Please enter a valid email address"
+    }
+  ]
 };
 ```
 
-### Form Validation
+## 💼 Advanced Examples
 
-Mich-Pages supports advanced form validation using regex patterns:
+### Form with Validation
 
 ```jsx
-const headings = [
-  {
+import { useState } from "react";
+import { NewPage } from "mich-pages";
+import { Lock, Eye, EyeOff } from "lucide-react";
+
+export function SecureForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const passwordField = {
     key: "password",
     name: "Password",
     category: "security",
-    placeholder: "Enter password",
-    formType: "password",
+    placeholder: "Create a strong password",
     required: true,
+    formType: showPassword ? "text" : "password",
+    prefixIcons: <Lock />,
+    suffixIcons: (
+      <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="p-1 hover:bg-gray-100 rounded"
+      >
+        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+      </button>
+    ),
     useRegex: [
       {
-        regex: /^.{8,15}$/,
-        message: "Password must be between 8 and 15 characters"
-      },
-      {
-        regex: /[a-z]/,
-        message: "Password must contain at least one lowercase letter"
+        regex: /^.{8,}$/,
+        message: "Password must be at least 8 characters long"
       },
       {
         regex: /[A-Z]/,
         message: "Password must contain at least one uppercase letter"
       },
       {
+        regex: /[a-z]/,
+        message: "Password must contain at least one lowercase letter"
+      },
+      {
         regex: /\d/,
         message: "Password must contain at least one number"
       },
       {
-        regex: /[@.#$!%*?&]/,
-        message: "Password must contain at least one special character (@.#$!%*?&)"
+        regex: /[!@#$%^&*(),.?":{}|<>]/,
+        message: "Password must contain at least one special character"
       }
     ]
-  }
-];
-```
-
-### Nested Fields
-
-```jsx
-const headings = [
-  {
-    key: "address",
-    name: "Address",
-    category: "contact",
-    formType: "obj",
-    child: [
-      {
-        key: "street",
-        name: "Street",
-        category: "contact",
-        formType: "text",
-        required: true
-      },
-      {
-        key: "city",
-        name: "City",
-        category: "contact",
-        formType: "text"
-      },
-      {
-        key: "zipCode",
-        name: "Zip Code",
-        category: "contact",
-        formType: "text"
-      }
-    ]
-  }
-];
-```
-
-### Array Fields
-
-Mich-Pages supports array fields for collecting multiple instances of a data structure:
-
-```jsx
-const headings = [
-  {
-    key: "members",
-    name: "User",
-    category: "members",
-    placeholder: "Enter user details",
-    formType: "array",
-    prefixIcons: <User />,
-    child: [
-      {
-        key: "firstName",
-        name: "First Name",
-        category: "members",
-        placeholder: "Enter first name",
-        formType: "text",
-        required: true
-      },
-      {
-        key: "email",
-        name: "Email",
-        category: "members", 
-        placeholder: "Enter email address",
-        formType: "email"
-      }
-    ]
-  }
-];
-```
-
-### Password Fields
-
-Password fields can be configured with a show/hide toggle:
-
-```jsx
-const [showPassword, setShowPassword] = useState(false);
-
-const headings = [
-  {
-    key: "password",
-    name: "Password",
-    category: "security",
-    placeholder: "Enter your password",
-    required: true,
-    formType: showPassword ? "text" : "password",
-    suffixIcons: (
-      <LucideView
-        onClick={() => {
-          setShowPassword(!showPassword);
-        }}
-        size={16}
-      />
-    )
-  }
-];
-```
-
-## Components
-
-### Input Component
-
-The `Input` component provides a standardized way to create form inputs with validation:
-
-```jsx
-import { Input } from 'mich-pages';
-
-const MyForm = () => {
-  return (
-    <Input
-      label="Email Address"
-      inputType={{
-        type: "email",
-        name: "email",
-        placeholder: "Enter your email",
-        required: true
-      }}
-      helper="We'll never share your email"
-      showHelper={true}
-    />
-  );
-};
-```
-
-### Select Components
-
-Mich-Pages offers three select components with different UIs:
-
-1. `SelectInput`: Standard dropdown select
-2. `SelectInput2`: Card-like selection interface
-3. `SelectInput3`: Advanced select with search capabilities
-
-```jsx
-import { SelectInput3 } from 'mich-pages';
-
-const MyForm = () => {
-  return (
-    <SelectInput3
-      label="Position"
-      kv={{
-        STAFFs: { value: "STAFF", description: "Staff" },
-        USERs: { value: "USER", description: "User" },
-        TEACHERs: { value: "TEACHER", description: "Teacher" }
-      }}
-      placeholder="Select a position"
-      inputType={{
-        className: "w-full",
-        name: "position",
-        required: true,
-        onChange: ({ key, value }) => console.log(key, value)
-      }}
-    />
-  );
-};
-```
-
-### File Input
-
-The `FileInput` component provides drag-and-drop file upload functionality:
-
-```jsx
-import { FileInput } from 'mich-pages';
-
-const MyForm = () => {
-  return (
-    <FileInput
-      label="Profile Picture"
-      placeholder="Drag and drop or click to upload"
-      inputType={{
-        accept: "image/*",
-        name: "profilePic",
-        className: "w-full",
-        onChange: (e) => console.log(e.target.files)
-      }}
-    />
-  );
-};
-```
-
-### Rich Text Editor
-
-The `PresetQuillEditor` component provides rich text editing capabilities:
-
-```jsx
-import { PresetQuillEditor } from 'mich-pages';
-
-const MyForm = () => {
-  const [content, setContent] = useState('');
-  
-  return (
-    <PresetQuillEditor
-      value={content}
-      onChange={setContent}
-      placeholder="Enter your content here..."
-    />
-  );
-};
-```
-
-## TypeScript Support
-
-Mich-Pages includes TypeScript definitions for all components and interfaces:
-
-```typescript
-import {
-  InputI,
-  InputTypeI,
-  PageCategoriesI,
-  PageHeadingI,
-  PageI,
-  SelectI,
-  SelectThreeI,
-  SelectTwoI,
-  FileInputI
-} from 'mich-pages';
-```
-
-## Examples
-
-Here's a complete example of a form page with multiple field types:
-
-```jsx
-import { useState } from "react";
-import { NewPage } from "mich-pages";
-import { Calendar, LucideView, MailSearchIcon, Phone, Salad, User } from "lucide-react";
-
-export function ExchangeSettings() {
-  const [showPassword, setShowPassword] = useState(false);
-  
-  const categories = [
-    { key: "staff", name: "Staff" },
-    { key: "customer", name: "Customer" },
-    { key: "supplier", name: "Supplier" },
-    { key: "members", name: "Members" }
-  ];
-
-  const headings = [
-    {
-      key: "members",
-      name: "User",
-      category: "members",
-      placeholder: "Enter user details",
-      formType: "array",
-      prefixIcons: <User />,
-      child: [
-        {
-          key: "firstName",
-          name: "First Name",
-          category: "members",
-          placeholder: "Enter first name",
-          formType: "text",
-          unique: true
-        },
-        {
-          key: "email",
-          name: "Email",
-          category: "members",
-          placeholder: "Enter email address",
-          formType: "text"
-        }
-      ]
-    },
-    {
-      key: "position",
-      name: "Position",
-      category: "supplier",
-      placeholder: "Select position",
-      required: true,
-      formType: "select3",
-      prefixIcons: <MailSearchIcon />,
-      keyValue: {
-        STAFFs: { value: "STAFF", description: "Staff" },
-        USERs: { value: "USER", description: "User" },
-        TEACHERs: { value: "TEACHER", description: "Teacher" }
-      }
-    },
-    {
-      key: "password",
-      name: "Password",
-      category: "supplier",
-      placeholder: "Enter password",
-      required: true,
-      formType: showPassword ? "text" : "password",
-      useRegex: [
-        {
-          regex: /^.{8,15}$/,
-          message: "Password must be between 8 and 15 characters"
-        },
-        {
-          regex: /[a-z]/,
-          message: "Password must contain at least one lowercase letter"
-        },
-        {
-          regex: /[A-Z]/,
-          message: "Password must contain at least one uppercase letter"
-        },
-        {
-          regex: /\d/,
-          message: "Password must contain at least one number"
-        },
-        {
-          regex: /[@.#$!%*?&]/,
-          message: "Password must contain at least one special character"
-        }
-      ],
-      suffixIcons: (
-        <LucideView
-          onClick={() => setShowPassword(!showPassword)}
-          size={16}
-        />
-      )
-    },
-    {
-      key: "dateOfBirth",
-      name: "Date of Birth",
-      category: "customer",
-      placeholder: "Select date of birth",
-      required: true,
-      formType: "date",
-      prefixIcons: <User />
-    },
-    {
-      key: "phoneNumber",
-      name: "Phone Number",
-      category: "staff",
-      placeholder: "Enter phone number",
-      required: true,
-      formType: "text",
-      prefixIcons: <Phone />
-    }
-  ];
-
-  const initialData = {
-    position: "STAFF",
-    members: [
-      {
-        firstName: "John",
-        email: "john@example.com"
-      },
-      {
-        firstName: "Jane",
-        email: "jane@example.com"
-      }
-    ],
-    dateOfBirth: "2000-01-01",
-    phoneNumber: "+1234567890"
   };
-
-  const pageConfig = {
-    type: "CREATE",
-    headings: headings,
-    categories: categories,
-    data: initialData,
-    name: "Company",
-    icon: <Calendar />,
-    id: "company-form",
-    style: {},
-    showButton: {
-      createButton: true
-    },
-    create: {
-      create: async (data) => {
-        console.log("Form submitted:", data);
-        return "isSuccess";
-      },
-      createStatus: "none"
-    }
-  };
-
-  return <NewPage data={pageConfig} />;
+  
+  // ... rest of configuration
 }
 ```
 
-## Image Examples
+### Dynamic Array Fields
 
+```jsx
+const teamMembersField = {
+  key: "teamMembers",
+  name: "Team Members",
+  category: "team",
+  formType: "array",
+  child: [
+    {
+      key: "name",
+      name: "Member Name",
+      category: "team",
+      formType: "text",
+      required: true,
+      placeholder: "Enter member name"
+    },
+    {
+      key: "role",
+      name: "Role",
+      category: "team",
+      formType: "select",
+      required: true,
+      keyValue: {
+        developer: { value: "developer", description: "Developer" },
+        designer: { value: "designer", description: "Designer" },
+        manager: { value: "manager", description: "Manager" }
+      }
+    },
+    {
+      key: "email",
+      name: "Email",
+      category: "team",
+      formType: "email",
+      placeholder: "member@company.com"
+    }
+  ]
+};
+```
+
+### File Upload Configuration
+
+```jsx
+const profilePictureField = {
+  key: "profilePicture",
+  name: "Profile Picture",
+  category: "personal",
+  formType: "image",
+  placeholder: "Upload your profile picture",
+  accept: "image/*",
+  maxSize: 5000000, // 5MB
+  helper: "Supported formats: JPG, PNG, GIF (max 5MB)"
+};
+```
+
+## 🎨 Theming
+
+Customize the appearance of your forms:
+
+```jsx
+const customTheme = {
+  style: {
+    primary: "#3b82f6",     // Primary color for buttons and accents
+    secondary: "#6b7280",   // Secondary color for borders and labels
+    tertiary: "#1e293b"     // Tertiary color for backgrounds
+  }
+};
+```
+
+## 🔍 API Reference
+
+### Component Props
+
+#### NewPage
+
+```typescript
+interface NewPageProps {
+  data: PageI;
+}
+```
+
+#### Input
+
+```typescript
+interface InputProps {
+  label: string;
+  inputType: InputTypeI;
+  helper?: string;
+  showHelper?: boolean;
+  className?: string;
+}
+```
+
+#### SelectInput3
+
+```typescript
+interface SelectInput3Props {
+  label: string;
+  kv: Record<string, { value: string; description: string }>;
+  placeholder?: string;
+  inputType: SelectInputTypeI;
+  helper?: string;
+  showHelper?: boolean;
+}
+```
+
+## 🤔 FAQ
+
+**Q: Can I use custom validation rules?**
+A: Yes! Use the `useRegex` property with custom regex patterns and error messages.
+
+**Q: How do I handle file uploads?**
+A: Use the `FileInput` component or set `formType: "file"` in your field configuration.
+
+**Q: Can I nest objects and arrays?**
+A: Absolutely! Use `formType: "obj"` for nested objects and `formType: "array"` for arrays.
+
+**Q: Is server-side rendering supported?**
+A: Yes, the library is compatible with Next.js and other SSR frameworks.
+
+## 🛠️ Development
+
+```bash
+# Clone the repository
+git clone https://github.com/derekzyl/mich-pages.git
+
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build the library
+npm run build
+
+# Run tests
+npm test
+```
+
+## 📝 Changelog
+
+### v1.0.0 (Latest)
+- Initial release with full CRUD functionality
+- TypeScript support
+- Comprehensive form validation
+- File upload capabilities
+- Rich text editor integration
+## Image Examples  
 - [create  desktop page](/src/assets/create_desktop.jpeg)
 - [update desktop page](/src/assets/update_desktop.jpeg)
 - [view desktop page](/src/assets/view_desktop.jpeg)
@@ -623,24 +392,33 @@ export function ExchangeSettings() {
 - [update mobile page](/src/assets/update_mobile.jpeg)
 - [view mobile page](/src/assets/view_mobile.jpeg)
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [React](https://reactjs.org/)
+- Icons by [Lucide React](https://lucide.dev/)
+- Rich text editing powered by [Quill](https://quilljs.com/)
+
+## 📞 Support
+
+- 📧 **Email**: [derekzyl@gmail.com](mailto:derekzyl@gmail.com)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/derekzyl/mich-pages/issues)
+- 📖 **Documentation**: [GitHub Repository](https://github.com/derekzyl/mich-pages)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/derekzyl/mich-pages/discussions)
 
 ---
 
-Created by [Derek Og](mailto:derekzyl@gmail.com)
-
-GitHub: [https://github.com/derekzyl/mich-pages](https://github.com/derekzyl/mich-pages)
-
-Report issues: [https://github.com/derekzyl/mich-pages/issues](https://github.com/derekzyl/mich-pages/issues)
+Made with ❤️ by [Derek Og](https://github.com/derekzyl)
